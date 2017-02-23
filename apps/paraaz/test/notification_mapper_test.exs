@@ -1,4 +1,4 @@
-defmodule ConverterTest do
+defmodule NotificationMapperTest do
     use ExUnit.Case
     alias Paraaz.Notification
     alias Riak.CRDT.Map

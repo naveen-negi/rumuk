@@ -2,7 +2,8 @@ defmodule Paraaz.NotificationCordinator do
     alias Paraaz.Notification
     alias Paraaz.User
     alias Riak.CRDT.Map
-    
+    alias Paraaz.NotificationMapper
+
     def save(user_id , category_type, category_fields) do
          
          %{id: notification_id, notification: notification} =
@@ -30,10 +31,8 @@ defmodule Paraaz.NotificationCordinator do
             _   ->    user_map =   user |> Map.value
                       :orddict.fetch({"notifications", :set}, user_map)
                       |> Enum.map(fn x -> Riak.find("maps","notifications", x) end) 
-                      |>  Enum.map(&( Map.value &1 )) 
+                      |> Enum.map(fn x -> NotificationMapper.to_domain(x) end)
+                      
         end
-      
-
     end
-    
 end
