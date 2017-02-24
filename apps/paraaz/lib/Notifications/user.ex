@@ -11,7 +11,7 @@ alias Paraaz.Notification
         notifications = Set.new |> Set.put(notification_id)
 
                 Map.new 
-                |> Map.put("user-id", id)
+                |> Map.put("user_id", id)
                 |> Map.put("notifications", notifications)
     end
 
@@ -23,12 +23,15 @@ alias Paraaz.Notification
          user |> Map.get(:set, "notifications")
     end
 
-    def get_all_notification_ids(user_id) do
-       user_map = Riak.find("maps", "users", user_id) |> Map.value 
+    def get_all_notification_ids(user) do
+       user_map = user |> Map.value 
        notifications = :orddict.fetch({"notifications", :set}, user_map)
        :ordset.to_list(notifications)
+    end
 
-    #    Enum.reduce notification_list, [], fn x -> Riak.fetch("maps", "notifications", x) |> Map.value end
-
+    def get_user_id(user) do
+        IO.inspect user
+        user_map = user |> Map.value 
+       :orddict.fetch({"user_id", :register}, user_map)
     end
 end
