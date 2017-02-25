@@ -3,13 +3,7 @@ defmodule Paraaz.UserMapper do
     alias Paraaz.NotificationMapper
     alias Paraaz.Domain.User
 
-    def to_domain(user) do
-        user_id = user |> Paraaz.User.get_user_id
-        IO.puts "userId: is .." 
-        IO.puts  user_id
-
-        notifications = NotificationCordinator.get_all_notifications(user_id)
-        
+    def to_domain(user_id, notifications) do
         %User{user_id: user_id, notifications: notifications}
     end
 end

@@ -23,9 +23,6 @@ test "should be able to create and save user in db" do
       assert {"notifications", :set} in map_keys
 
     data = :orddict.to_list(user_map)
-      
-      # assert {{"user-id", :register}, user_id} in data
-      # assert {{"notifications", :set}, id} in data
 
      assert  :orddict.fetch({"user-id", :register}, user_map) == user_id
       notifications_set = :orddict.fetch({"notifications", :set}, user_map)
@@ -50,8 +47,6 @@ test "user should be able to save and retreive notification" do
  
     user_map = Riak.find("maps", "users", user_id) |> Map.value
 
-    # IO.inspect user_map
-    
      map_keys = :orddict.fetch_keys(user_map)
     
       assert {"user-id", :register} in map_keys
