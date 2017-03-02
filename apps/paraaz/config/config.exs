@@ -25,8 +25,8 @@ config :pooler, pools:
     [
       name: :riaklocal1,
       group: :riak,
-      max_count: 10,
-      init_count: 5,
+      max_count: 20,
+      init_count: 10,
       start_mfa: { Riak.Connection, :start_link, [] }
     ]
   ]

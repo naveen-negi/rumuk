@@ -9,6 +9,16 @@ use Mix.Config
 # back to each application for organization purposes.
 import_config "../apps/*/config/config.exs"
 
+config :pooler, pools:
+  [
+    [
+      name: :riaklocal1,
+      group: :riak,
+      max_count: 20,
+      init_count: 10,
+      start_mfa: { Riak.Connection, :start_link, [] }
+    ]
+  ]
 # Sample configuration (overrides the imported configuration above):
 #
 #     config :logger, :console,

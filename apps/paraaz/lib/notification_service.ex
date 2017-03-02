@@ -1,4 +1,4 @@
-defmodule Paraaz.NotificationRegistry do
+defmodule Paraaz.NotificationService do
     use GenServer
     ##Client API
 

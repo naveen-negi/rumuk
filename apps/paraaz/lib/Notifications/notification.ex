@@ -4,6 +4,9 @@ defmodule Paraaz.Notification do
  alias Riak.CRDT.Set  
 
     def new(belongs_to, category_type, category_fields) do
+        IO.puts "================================================="
+        IO.inspect belongs_to
+        IO.puts "================================================="
         user_id = Register.new(belongs_to)
         category = Register.new(category_type)
         category_fields_map = create_category_fields(category_fields)

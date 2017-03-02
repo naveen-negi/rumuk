@@ -1,4 +1,4 @@
-defmodule NotificationRegistryTest do
+defmodule NotificationServiceTest do
     use ExUnit.Case
 
     setup do
@@ -11,9 +11,9 @@ defmodule NotificationRegistryTest do
         clean_up(user_id)
         category_type = Paraaz.CategoryType.MessageReceived.type.value
         category_fields = %{"sender_id"=> "Saber", "content"=> "Rin has called for a fight"}
-        Paraaz.NotificationRegistry.save(pid, user_id, category_type, category_fields)
+        Paraaz.NotificationService.save(pid, user_id, category_type, category_fields)
 
-        archer = Paraaz.NotificationRegistry.lookup(pid, user_id)
+        archer = Paraaz.NotificationService.lookup(pid, user_id)
         IO.inspect archer.notifications
         assert archer.user_id == user_id
         assert Enum.any? archer.notifications, fn x -> x.category_type==category_type

@@ -8,10 +8,13 @@ defmodule Paraaz.NotificationCordinator do
          %{id: notification_id, notification: notification} =
           Notification.new(user_id, category_type, category_fields)
 
-        IO.inspect notification
+          notification
           |> Riak.update("maps", "notifications", notification_id)
           
+          IO.inspect notification
+          
            user = Riak.find("maps", "users", user_id)
+           IO.inspect user
           case user do
              nil  ->    User.new(user_id, notification_id) 
                             |> Riak.update("maps", "users", user_id)
