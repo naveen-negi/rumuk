@@ -31,12 +31,12 @@ defmodule Tak.NotificationServer do
     end
 
     def handle_call({:lookup, user_id}, _from, state) do
-        user = Paraaz.NotificationCordinator.get_user(user_id)
+        user = Paraaz.NotificationService.get_user(user_id)
         {:reply, user, state}
     end
 
    def handle_cast({:save, user_id, category_type, category_fields}, state) do
-        Paraaz.NotificationCordinator.save(user_id, category_type, category_fields)
+        Paraaz.NotificationService.save(user_id, category_type, category_fields)
         {:noreply, []}
    end
 

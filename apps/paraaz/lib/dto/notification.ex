@@ -18,7 +18,7 @@ defmodule Paraaz.Notification do
         %{id: id_raw, notification: map}
     end
 
-     def create_category_fields(category_fields) do
+     defp create_category_fields(category_fields) do
        Enum.reduce(category_fields, Map.new, fn({k, v}, map) -> 
           map |> Map.put(to_string(k), Register.new(v))
         end)

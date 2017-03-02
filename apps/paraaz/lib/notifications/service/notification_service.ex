@@ -1,4 +1,4 @@
-defmodule Paraaz.NotificationCordinator do
+defmodule Paraaz.NotificationService do
     alias Paraaz.Notification
     alias Paraaz.User
     alias Riak.CRDT.Map

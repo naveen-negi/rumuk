@@ -83,11 +83,6 @@ defmodule NotificationTest do
         assert :orddict.fetch({"content", :register}, nested_map) == content
   end
 
-  test "should populate category fields" do
-    map = %{id: "mob_phsyco_100", content: "don't make me panic"}
-    category_fields = Paraaz.Notification.create_category_fields(map)
-  end
-
   test "basic" do
     register = Register.new("some string")
     flag = Flag.new |> Flag.enable

@@ -1,4 +1,4 @@
-defmodule NotificationCordinatorTest do
+defmodule NotificationServiceTest do
     use ExUnit.Case
     alias Paraaz.User
     alias Paraaz.Notification
@@ -13,7 +13,7 @@ defmodule NotificationCordinatorTest do
         clean_up(user_id)
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
-        ok_response = Paraaz.NotificationCordinator.save(user_id , category_type, category_fields)
+        ok_response = Paraaz.NotificationService.save(user_id , category_type, category_fields)
        
         assert ok_response == :ok
         clean_up(user_id)
@@ -24,7 +24,7 @@ defmodule NotificationCordinatorTest do
         clean_up(user_id)
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
-        ok_response = Paraaz.NotificationCordinator.save(user_id , category_type, category_fields)
+        ok_response = Paraaz.NotificationService.save(user_id , category_type, category_fields)
         assert ok_response == :ok
         clean_up(user_id)
     end
@@ -36,7 +36,7 @@ defmodule NotificationCordinatorTest do
         save_notification(user_id)
         save_notification(user_id)
 
-        notifications = Paraaz.NotificationCordinator.get_all_notifications(user_id)
+        notifications = Paraaz.NotificationService.get_all_notifications(user_id)
         assert length(notifications) == 3
         clean_up(user_id)
     end
@@ -44,7 +44,7 @@ defmodule NotificationCordinatorTest do
     defp save_notification(user_id) do
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
-        Paraaz.NotificationCordinator.save(user_id , category_type, category_fields)    
+        Paraaz.NotificationService.save(user_id , category_type, category_fields)    
     end
 
 end

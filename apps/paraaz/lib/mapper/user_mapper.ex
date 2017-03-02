@@ -1,5 +1,5 @@
 defmodule Paraaz.UserMapper do
-    alias Paraaz.NotificationCordinator
+    alias Paraaz.NotificationService
     alias Paraaz.NotificationMapper
     alias Paraaz.Domain.User
 

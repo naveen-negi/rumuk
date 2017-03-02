@@ -23,8 +23,8 @@ use Mix.Config
 config :pooler, pools:
   [
     [
-      name: :riaklocal1,
-      group: :riak,
+      name: :riaktest,
+      group: :riak_test,
       max_count: 20,
       init_count: 10,
       start_mfa: { Riak.Connection, :start_link, [] }
@@ -37,4 +37,3 @@ config :pooler, pools:
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-    import_config "#{Mix.env}.exs"
