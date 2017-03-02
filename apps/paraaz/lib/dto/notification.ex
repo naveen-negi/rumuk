@@ -4,9 +4,6 @@ defmodule Paraaz.Notification do
  alias Riak.CRDT.Set  
 
     def new(belongs_to, category_type, category_fields) do
-        IO.puts "================================================="
-        IO.inspect belongs_to
-        IO.puts "================================================="
         user_id = Register.new(belongs_to)
         category = Register.new(category_type)
         category_fields_map = create_category_fields(category_fields)
@@ -18,13 +15,10 @@ defmodule Paraaz.Notification do
                 |>Map.put("category_type", category)
                 |>Map.put("notification_id", id)
                 |>Map.put("category_fields", category_fields_map)
-         IO.puts "================================================== "
-         IO.puts "notification created : "
-         IO.inspect map
         %{id: id_raw, notification: map}
     end
 
-     def create_category_fields(category_fields) do
+     defp create_category_fields(category_fields) do
        Enum.reduce(category_fields, Map.new, fn({k, v}, map) -> 
           map |> Map.put(to_string(k), Register.new(v))
         end)

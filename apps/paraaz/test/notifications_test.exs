@@ -83,14 +83,6 @@ defmodule NotificationTest do
         assert :orddict.fetch({"content", :register}, nested_map) == content
   end
 
-  test "should populate category fields" do
-    map = %{id: "mob_phsyco_100", content: "don't make me panic"}
-
-    category_fields = Paraaz.Notification.create_category_fields(map)
-
-   IO.inspect category_fields
-  end
-
   test "basic" do
     register = Register.new("some string")
     flag = Flag.new |> Flag.enable
@@ -100,7 +92,6 @@ defmodule NotificationTest do
       |> Riak.update("maps", "my_map_bucket", "map_key")
 
       map = Riak.find("maps", "my_map_bucket", "map_key") |> Map.value
-      # IO.inspect map
       assert map != nil
   end
 

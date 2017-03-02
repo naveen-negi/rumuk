@@ -14,7 +14,7 @@ defmodule UserMapperTest do
         save_notification(user_id)
         save_notification(user_id)
         save_notification(user_id)
-        notifications = Paraaz.NotificationCordinator.get_all_notifications(user_id)
+        notifications = Paraaz.NotificationService.get_all_notifications(user_id)
          result = UserMapper.to_domain(user_id, notifications)
 
          assert result.user_id == user_id
@@ -29,6 +29,6 @@ defmodule UserMapperTest do
     defp save_notification(user_id) do
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
-        Paraaz.NotificationCordinator.save(user_id , category_type, category_fields)    
+        Paraaz.NotificationService.save(user_id , category_type, category_fields)    
     end
 end

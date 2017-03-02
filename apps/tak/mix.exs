@@ -21,7 +21,7 @@ defmodule Tak.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Tak, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext],
+     applications: [:pooler, :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext],
     included_applications: [ :pooler ]]
   end
 
@@ -40,6 +40,7 @@ defmodule Tak.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:poison, "~> 2.0"},
+     {:pooler, "~> 1.5"},
      {:paraaz, in_umbrella: true}
     ]
   end
