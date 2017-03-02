@@ -14,14 +14,12 @@ defmodule UserMapperTest do
         save_notification(user_id)
         save_notification(user_id)
         save_notification(user_id)
-
-        user = Riak.find("maps", "users", user_id)
-        
-         result = UserMapper.to_domain(user)
+        notifications = Paraaz.NotificationCordinator.get_all_notifications(user_id)
+         result = UserMapper.to_domain(user_id, notifications)
 
          assert result.user_id == user_id
          assert length(result.notifications) == 3
-        IO.inspect result
+
          result.notifications |> Enum.each fn x -> 
             assert x.user_id == user_id && x.category_type == InvitationRequest.type.value
              && x.category_fields == %{"sender_id" => "rin"}
