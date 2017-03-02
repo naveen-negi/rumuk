@@ -37,7 +37,9 @@ defmodule Paraaz.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-        {:riak, "~> 1.0"}
+        {:riak, "~> 1.0"},
+        { :uuid, "~> 1.1" }
     ]
   end
+
 end
