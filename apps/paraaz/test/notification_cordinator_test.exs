@@ -37,7 +37,6 @@ defmodule NotificationCordinatorTest do
         save_notification(user_id)
 
         notifications = Paraaz.NotificationCordinator.get_all_notifications(user_id)
-        IO.inspect notifications
         assert length(notifications) == 3
         clean_up(user_id)
     end

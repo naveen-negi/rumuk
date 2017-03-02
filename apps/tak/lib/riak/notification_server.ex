@@ -12,7 +12,10 @@ defmodule Tak.NotificationServer do
     end
 
     def lookup(pid, user_id) do
-        GenServer.call(pid, {:lookup, user_id})
+         response = GenServer.call(pid, {:lookup, user_id})
+         user_id = response.user_id
+         notifications = Enum.map(response.notifications, fn x -> Tak.Notification.new(x.notification_id, x.category_type, x.category_fields) end )
+         %Tak.User{user_id: user_id, notifications: notifications}
     end
 
     def init(:ok) do

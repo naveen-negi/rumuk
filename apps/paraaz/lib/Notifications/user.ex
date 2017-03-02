@@ -30,7 +30,6 @@ alias Paraaz.Notification
     end
 
     def get_user_id(user) do
-        IO.inspect user
         user_map = user |> Map.value 
        :orddict.fetch({"user_id", :register}, user_map)
     end

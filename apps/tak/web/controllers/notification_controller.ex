@@ -3,8 +3,11 @@ defmodule Tak.NotificationController do
 
     def get(conn, _params) do
          user_id = conn.params["user_id"]
-        notifications = Tak.NotificationServer.lookup(Tak.NotificationServer, user_id)
-        Poison.encode!(notifications)
+        user = Tak.NotificationServer.lookup(Tak.NotificationServer, user_id)
+        
+        conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Poison.encode!(user))
     end
 
     def create(conn, params) do

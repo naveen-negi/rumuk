@@ -17,11 +17,8 @@ defmodule NotificationMapperTest do
        notification_map |>  Riak.update("maps", "notifications", notification_id)
 
         notification = Riak.find("maps", "notifications", notification_id) 
-        # IO.inspect notification |> Map.Value
 
        result = to_domain( notification) 
-       IO.inspect result
-       #this should be a struct
        assert result.user_id == user_id
        assert result.category_type == category_type
        assert %{"sender_id" => "armin", "content" => "titans are in city"} == result.category_fields
