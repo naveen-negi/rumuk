@@ -25,16 +25,24 @@ defmodule Paraaz.NotificationCordinator do
 
     def get_all_notifications(user_id) do 
         user = Riak.find("maps", "users", user_id)
+        IO.inspect user
         case user do
             nil -> {:error, notifications: []}
             _   ->    user_map =   user |> Map.value
                       :orddict.fetch({"notifications", :set}, user_map)
                       |> Enum.map(fn x -> Riak.find("maps","notifications", x) end) 
+                      |> Enum.filter(fn x -> !is_nil(x) end)
                       |> Enum.map(fn x -> NotificationMapper.to_domain(x) end)
             end
         end
 
         def get_user(user_id) do
-            Paraaz.UserMapper.to_domain(user_id, get_all_notifications(user_id))
+            notification = get_all_notifications(user_id);
+            
+            case notification do
+                {:error, notifications: []} -> {:error, "user not found"}
+                _ -> user = Paraaz.UserMapper.to_domain(user_id, get_all_notifications(user_id))
+                    {:ok, user}
+            end
         end
 end

@@ -25,9 +25,16 @@ defmodule Tak.NotificationControllerTest do
         # assert user.category_fields.sender_id == category_fields.sender_id
      end
 
+     test "should return not found for non existent user" do
+          response = get conn, "api/users/unknow/notifications" 
+          assert response.status == 404
+     end
+
     defp save() do
         notification_type = Tak.CategoryType.InvitationRequest.type
         category_fields = %{sender_id: "Lancter"}
         post conn, "api/users/erin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
     end
+
+
 end

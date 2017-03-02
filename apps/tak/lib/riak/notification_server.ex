@@ -13,9 +13,17 @@ defmodule Tak.NotificationServer do
 
     def lookup(pid, user_id) do
          response = GenServer.call(pid, {:lookup, user_id})
-         user_id = response.user_id
-         notifications = Enum.map(response.notifications, fn x -> Tak.Notification.new(x.notification_id, x.category_type, x.category_fields) end )
-         %Tak.User{user_id: user_id, notifications: notifications}
+         IO.inspect response
+         case response do
+             {:ok, user} -> notifications = Enum.map(user.notifications, 
+                                                fn x -> Tak.Notification.new(x.notification_id, x.category_type, x.category_fields)
+                                                 end )
+                            user = %Tak.User{user_id: user.user_id, notifications: notifications}
+                            {:ok, user}
+
+            {:error, result} ->   {:error, "not found"}
+         end
+         
     end
 
     def init(:ok) do
