@@ -17,7 +17,10 @@ alias Riak.CRDT.Map, as: M
         nested_struct = kind.__struct__ |>  Map.get(trim_key(key))
         map = :orddict.fetch(key, map)
         result = reduce_map(map, kind)
-        struct(nested_struct, result)
+        cond do
+            nested_struct != nil -> struct(nested_struct, result)
+            nested_struct == nil -> result
+        end
     end
 
      defp get_value(key, map, kind) do
