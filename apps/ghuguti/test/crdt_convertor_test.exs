@@ -1,5 +1,5 @@
 defmodule CrdtConvertorTest do
-  use ExUnit.Case
+  use Ghuguti.Case
   doctest Ghuguti
   import Map
   alias Ghuguti.CrdtConvertor
@@ -13,8 +13,6 @@ defmodule CrdtConvertorTest do
       |> Riak.update("maps", "bucketmap", model.name)
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
-     IO.inspect map
-
     map_keys = :orddict.fetch_keys(map)
 
     assert {"is_interested", :flag} in map_keys
@@ -67,7 +65,7 @@ defmodule CrdtConvertorTest do
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
      map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-     IO.inspect map
+    #  IO.inspect map
     map_keys = :orddict.fetch_keys(map)
 
     data = :orddict.to_list(map)
@@ -87,18 +85,70 @@ defmodule CrdtConvertorTest do
      user = Riak.find("maps", "bucketmap", user_id) 
 
     updated_map = CrdtConvertor.update(user, [is_interested: false])
-     IO.inspect updated_map
+    #  IO.inspect updated_map
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
      map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-     IO.inspect map
+    #  IO.inspect map
     map_keys = :orddict.fetch_keys(map)
 
     data = :orddict.to_list(map)
     assert {{"is_interested", :flag}, false} in data
   end
 
-def given_that_user_already_exists(user_id) do
+  test "should convert model with nested struct to crdt with nested map" do
+    model = MapWithNestedMap.new("mustang_1", BasicMap.new)
+
+      CrdtConvertor.to_crdt(model)
+      |> Riak.update("maps", "bucketmap", model.name)
+
+    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map_keys = :orddict.fetch_keys(map)
+
+    assert {"name", :register} in map_keys
+    assert {"nested_struct", :map} in map_keys
+    assert :orddict.size(map) == 2
+
+    data = :orddict.to_list(map)
+    assert {{"name", :register}, model.name} in data
+
+    nested_map = :orddict.fetch({"nested_struct", :map}, map)
+    
+    assert :orddict.fetch({"name", :register}, nested_map) == "subaru"
+    assert :orddict.fetch({"age", :register}, nested_map) == "30"
+    assert :orddict.fetch({"is_interested", :flag}, nested_map) == true
+  end
+
+  test "should convert model with doubly nested struct to crdt with doubly nested map" do
+    first_map = MapWithNestedMap.new("mustang_2", BasicMap.new)
+    model = DoublyMapWithNestedMap.new("mustang_daddy", first_map)
+
+      CrdtConvertor.to_crdt(model)
+      |> Riak.update("maps", "bucketmap", model.name)
+
+    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map_keys = :orddict.fetch_keys(map)
+    IO.inspect map
+    assert {"name", :register} in map_keys
+    assert {"nested_struct", :map} in map_keys
+    assert :orddict.size(map) == 2
+
+    data = :orddict.to_list(map)
+    assert {{"name", :register}, "mustang_daddy"} in data
+
+    nested_map = :orddict.fetch({"nested_struct", :map}, map)
+    
+    assert :orddict.fetch({"name", :register}, nested_map) == "mustang_2"
+    
+    doubly_nested_map = :orddict.fetch({"nested_struct", :map}, nested_map)
+    
+    assert :orddict.fetch({"name", :register}, doubly_nested_map) == "subaru"
+    assert :orddict.fetch({"age", :register}, doubly_nested_map) == "30"
+    assert :orddict.fetch({"is_interested", :flag}, doubly_nested_map) == true
+  end
+
+
+defp given_that_user_already_exists(user_id) do
    
      BasicMap.new(user_id)
       |> CrdtConvertor.to_crdt
@@ -132,6 +182,22 @@ defmodule BasicMapWithCounter do
 
   def new do
     %BasicMapWithCounter{}
+  end
+end
+
+defmodule MapWithNestedMap do
+  defstruct name: "rin_osaka", nested_struct: nil
+
+  def new(name, nested_struct) do
+    %MapWithNestedMap{name: name, nested_struct: nested_struct}
+  end
+end
+
+defmodule DoublyMapWithNestedMap do
+  defstruct name: nil, nested_struct: nil
+
+  def new(name, nested_struct) do
+    %DoublyMapWithNestedMap{name: name, nested_struct: nested_struct}
   end
 end
 
