@@ -17,12 +17,12 @@ defmodule Ghuguti.CrdtConvertor do
     end
 
       defp update_field(map, key, value) when is_boolean(value) do
-       IO.puts "inside update flag"
+    #    IO.puts "inside update flag"
        flag =  cond do
                     value -> Flag.new |> Flag.enable
                     !value -> Flag.new |> Flag.disable    
             end
-        IO.inspect flag
+        # IO.inspect flag
        Map.update(map, :flag, to_string(key), fn _ -> flag end)
     end
 
