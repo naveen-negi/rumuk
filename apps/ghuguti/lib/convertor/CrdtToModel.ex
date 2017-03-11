@@ -15,8 +15,13 @@ alias Riak.CRDT.Map, as: M
 
      defp get_value({value, type} = key , map, kind) when type==:map do
         nested_struct = kind.__struct__ |>  Map.get(trim_key(key))
+        # IO.puts "==========================="
+        # IO.inspect kind.__struct__
+        # IO.inspect nested_struct
+        # IO.inspect trim_key(key)
+        # IO.puts "==========================="
         map = :orddict.fetch(key, map)
-        result = reduce_map(map, kind)
+        result = reduce_map(map, nested_struct.__struct__)
         cond do
             nested_struct != nil -> struct(nested_struct, result)
             nested_struct == nil -> result

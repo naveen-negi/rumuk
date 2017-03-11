@@ -17,23 +17,23 @@ defmodule Ghuguti.CrdtConvertor do
     end
 
       defp update_field(map, key, value) when is_boolean(value) do
-    #    IO.puts "inside update flag"
        flag =  cond do
                     value -> Flag.new |> Flag.enable
                     !value -> Flag.new |> Flag.disable    
             end
-        # IO.inspect flag
        Map.update(map, :flag, to_string(key), fn _ -> flag end)
     end
 
     defp update_field(map, key, value) when is_binary(value) do
-        IO.puts "inside string match in update"
-        IO.inspect value 
        Map.update(map, :register, to_string(key), fn _ -> Register.new(to_string(value)) end)
     end
 
-    def get_crdt_value(value) when is_binary(value) do
-        Register.new(to_string(value))
+    def get_crdt_value(value) when is_binary(value) or is_nil(value) do
+        cond do
+            value != nil -> Register.new(to_string(value))
+            value == nil -> Register.new(to_string(""))
+        end
+        
     end
 
      def get_crdt_value(value) when is_integer(value) do

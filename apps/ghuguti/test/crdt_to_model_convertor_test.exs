@@ -5,6 +5,7 @@ defmodule CrdtToModelConvertorTest do
     alias Riak.CRDT.Flag
     alias Riak.CRDT.Map
     alias Riak.CRDT.Counter
+     alias Ghuguti.CrdtConvertor
 
     test "should convert crdt map to model" do
          key = Ghuguti.Helper.random_key
@@ -29,7 +30,6 @@ defmodule CrdtToModelConvertorTest do
       |> Map.value
 
      user =  Convertor.CrdtToModel.to_model(map, TestModel)
-     IO.inspect user
      assert user.reg_key == reg_data
      assert user.flag_key == true
      assert user.counter_key == 1
@@ -89,6 +89,38 @@ test "should convert crdt with with nested map to model with nested model" do
     assert model.nested_model == n_model
 end
 
+test "should convert crdt with with doubly nested map to model with doubly nested model" do
+    key = Ghuguti.Helper.random_key
+   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
+   map = Riak.find("maps", "bucketmap", key) |> Map.value
+   model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
+   IO.inspect model
+   assert model.reg_key == "reg_key_top"
+   assert model.nested_model_parrent.reg_key == "reg_key"
+   assert model.nested_model_parrent.nested_model.flag_key == true
+end
+
+test "should convert crdt with with doubly nested map to model with doubly nested model" do
+   key = Ghuguti.Helper.random_key
+   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
+   map = Riak.find("maps", "bucketmap", key) |> Map.value
+   model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
+   IO.inspect model
+   assert model.reg_key == "reg_key_top"
+   assert model.nested_model_parrent.reg_key == "reg_key"
+   assert model.nested_model_parrent.nested_model.flag_key == true
+end
+
+test "should convert map with multiple nested model" do
+    key = Ghuguti.Helper.random_key
+   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
+   map = Riak.find("maps", "bucketmap", key) |> Map.value
+   model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
+   IO.inspect model
+   assert model.reg_key == "reg_key_top"
+   assert model.nested_model_parrent.reg_key == "reg_key"
+   assert model.nested_model_parrent.nested_model.flag_key == true
+end
 end
 
 
@@ -97,7 +129,7 @@ defmodule TestModel do
 end
 
 defmodule NestedModel do
-    defstruct flag_key: nil
+    defstruct flag_key: true
 
     def new do
         %NestedModel{flag_key: true}
@@ -109,5 +141,22 @@ defmodule TestModelWithNestedMap do
 end
 
 defmodule TestModelWithNestedModel do
-    defstruct reg_key: nil, nested_model: %NestedModel{}
+    defstruct reg_key: "reg_key", nested_model: %NestedModel{}
+end
+
+defmodule TestModelWithDoublyNestedHierarchy do
+     defstruct reg_key: "reg_key_top", nested_model_parrent: %TestModelWithNestedModel{}
+
+     def new do
+         %TestModelWithDoublyNestedHierarchy{}
+     end
+end
+
+defmodule TestModelWithMultipleChildrenModels do
+     defstruct reg_key: "reg_key_top", nested_model_1: %TestModelWithNestedModel{}, nested_model_2: %TestModel{flag_key: true}, 
+     nested_model: %NestedModel{flag_key: false}
+
+     def new do
+         %TestModelWithDoublyNestedHierarchy{}
+     end
 end

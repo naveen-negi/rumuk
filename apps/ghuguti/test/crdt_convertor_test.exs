@@ -65,7 +65,6 @@ defmodule CrdtConvertorTest do
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
      map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    #  IO.inspect map
     map_keys = :orddict.fetch_keys(map)
 
     data = :orddict.to_list(map)
@@ -85,11 +84,9 @@ defmodule CrdtConvertorTest do
      user = Riak.find("maps", "bucketmap", user_id) 
 
     updated_map = CrdtConvertor.update(user, [is_interested: false])
-    #  IO.inspect updated_map
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
      map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    #  IO.inspect map
     map_keys = :orddict.fetch_keys(map)
 
     data = :orddict.to_list(map)
@@ -128,7 +125,6 @@ defmodule CrdtConvertorTest do
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
     map_keys = :orddict.fetch_keys(map)
-    IO.inspect map
     assert {"name", :register} in map_keys
     assert {"nested_struct", :map} in map_keys
     assert :orddict.size(map) == 2
