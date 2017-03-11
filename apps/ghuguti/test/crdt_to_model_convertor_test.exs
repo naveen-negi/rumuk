@@ -100,26 +100,17 @@ test "should convert crdt with with doubly nested map to model with doubly neste
    assert model.nested_model_parrent.nested_model.flag_key == true
 end
 
-test "should convert crdt with with doubly nested map to model with doubly nested model" do
-   key = Ghuguti.Helper.random_key
-   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
-   map = Riak.find("maps", "bucketmap", key) |> Map.value
-   model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
-   IO.inspect model
-   assert model.reg_key == "reg_key_top"
-   assert model.nested_model_parrent.reg_key == "reg_key"
-   assert model.nested_model_parrent.nested_model.flag_key == true
-end
-
 test "should convert map with multiple nested model" do
     key = Ghuguti.Helper.random_key
-   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
+   CrdtConvertor.to_crdt(TestModelWithMultipleChildren.new) |> Riak.update("maps", "bucketmap", key)
    map = Riak.find("maps", "bucketmap", key) |> Map.value
-   model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
+   model = Convertor.CrdtToModel.to_model(map, TestModelWithMultipleChildren)
    IO.inspect model
    assert model.reg_key == "reg_key_top"
-   assert model.nested_model_parrent.reg_key == "reg_key"
-   assert model.nested_model_parrent.nested_model.flag_key == true
+   assert model.nested_model_1.reg_key == "reg_key"
+   assert model.nested_model_1.nested_model.flag_key == true
+   assert model.nested_model_2.flag_key == true
+   assert model.nested_model_3.flag_key == false
 end
 end
 
@@ -152,11 +143,11 @@ defmodule TestModelWithDoublyNestedHierarchy do
      end
 end
 
-defmodule TestModelWithMultipleChildrenModels do
+defmodule TestModelWithMultipleChildren do
      defstruct reg_key: "reg_key_top", nested_model_1: %TestModelWithNestedModel{}, nested_model_2: %TestModel{flag_key: true}, 
-     nested_model: %NestedModel{flag_key: false}
+     nested_model_3: %NestedModel{flag_key: false}
 
      def new do
-         %TestModelWithDoublyNestedHierarchy{}
+         %TestModelWithMultipleChildren{}
      end
 end
