@@ -1,5 +1,5 @@
 defmodule UserMapperTest do
-    use ExUnit.Case
+    use Ghuguti.Case
     alias Paraaz.UserMapper
     alias Paraaz.User
     alias Paraaz.CategoryType.InvitationRequest

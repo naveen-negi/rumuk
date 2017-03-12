@@ -1,15 +1,15 @@
-defmodule CrdtConvertorTest do
+defmodule ModelToCrdtConvertorTest do
   use Ghuguti.Case
   doctest Ghuguti
   import Map
-  alias Ghuguti.CrdtConvertor
+  alias Convertor.ModelToCrdt
   alias Riak.CRDT.Map
   
   test "should be able to convert a struct into crdt" do
      model = BasicMap.new
      model_map = from_struct(model)
 
-      CrdtConvertor.to_crdt(model)
+      ModelToCrdt.to_crdt(model)
       |> Riak.update("maps", "bucketmap", model.name)
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
@@ -29,7 +29,7 @@ defmodule CrdtConvertorTest do
   test "should convert struct with list to CRDT with Set" do
      model = BasicMapWithSet.new
 
-      CrdtConvertor.to_crdt(model)
+      ModelToCrdt.to_crdt(model)
       |> Riak.update("maps", "bucketmap", model.name)
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
@@ -60,7 +60,7 @@ defmodule CrdtConvertorTest do
      updated_value = "20"
      user = Riak.find("maps", "bucketmap", user_id) 
 
-    updated_map = CrdtConvertor.update(user, [age: updated_value])
+    updated_map = ModelToCrdt.update(user, [age: updated_value])
      
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
@@ -78,12 +78,12 @@ defmodule CrdtConvertorTest do
        user = %{ user | is_interested: true}
       
         user 
-        |> CrdtConvertor.to_crdt
+        |> ModelToCrdt.to_crdt
         |> Riak.update("maps", "bucketmap", user_id)
 
      user = Riak.find("maps", "bucketmap", user_id) 
 
-    updated_map = CrdtConvertor.update(user, [is_interested: false])
+    updated_map = ModelToCrdt.update(user, [is_interested: false])
      updated_map |> Riak.update("maps", "bucketmap",user_id)
 
      map = Riak.find("maps", "bucketmap", user_id) |> Map.value
@@ -96,7 +96,7 @@ defmodule CrdtConvertorTest do
   test "should convert model with nested struct to crdt with nested map" do
     model = MapWithNestedMap.new("mustang_1", BasicMap.new)
 
-      CrdtConvertor.to_crdt(model)
+      ModelToCrdt.to_crdt(model)
       |> Riak.update("maps", "bucketmap", model.name)
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
@@ -120,7 +120,7 @@ defmodule CrdtConvertorTest do
     first_map = MapWithNestedMap.new("mustang_2", BasicMap.new)
     model = DoublyMapWithNestedMap.new("mustang_daddy", first_map)
 
-      CrdtConvertor.to_crdt(model)
+      ModelToCrdt.to_crdt(model)
       |> Riak.update("maps", "bucketmap", model.name)
 
     map = Riak.find("maps", "bucketmap", model.name) |> Map.value
@@ -147,7 +147,7 @@ defmodule CrdtConvertorTest do
 defp given_that_user_already_exists(user_id) do
    
      BasicMap.new(user_id)
-      |> CrdtConvertor.to_crdt
+      |> ModelToCrdt.to_crdt
       |> Riak.update("maps", "bucketmap", user_id)
 end
 

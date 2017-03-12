@@ -1,5 +1,5 @@
 defmodule MessageRecievedTest do
-    use ExUnit.Case
+    use Ghuguti.Case
     alias Paraaz.CategoryType.MessageReceived
 
     test "should be able to create message received category type" do

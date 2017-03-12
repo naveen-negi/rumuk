@@ -7,7 +7,7 @@ alias Riak.CRDT.Map, as: M
     end
 
     def reduce_map(map, kind) do
-         keys =  :orddict.fetch_keys(map)
+        keys =  :orddict.fetch_keys(map)
         Enum.reduce( keys, %{}, fn(x, acc) -> 
         :maps.put(trim_key(x), 
         get_value(x, map, kind), acc) end)

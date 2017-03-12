@@ -1,5 +1,5 @@
 defmodule UserTest do
-  use ExUnit.Case
+  use Ghuguti.Case
   alias Riak
   alias Paraaz.User
   alias Riak.CRDT.Map
@@ -8,7 +8,7 @@ defmodule UserTest do
 
 
 test "should be able to create and save user in db" do
-    user_id = "rin_1234"
+    user_id = "rin_12345"
     notification_id = "rin_1234_user_activated"
 
                    User.new(user_id, notification_id)
@@ -19,22 +19,21 @@ test "should be able to create and save user in db" do
 
      map_keys = :orddict.fetch_keys(user_map)
     
-      assert {"user-id", :register} in map_keys
+      assert {"user_id", :register} in map_keys
       assert {"notifications", :set} in map_keys
 
     data = :orddict.to_list(user_map)
 
-     assert  :orddict.fetch({"user-id", :register}, user_map) == user_id
+     assert  :orddict.fetch({"user_id", :register}, user_map) == user_id
       notifications_set = :orddict.fetch({"notifications", :set}, user_map)
 
      assert notification_id in  notifications_set
 end
 
 test "user should be able to save and retreive notification" do
-    
     created_notification_id = "full_metal_alchemist"
      sender_id = "wrath"
-     user_id = "Erin"
+     user_id = "Erin1"
      User.new(user_id, created_notification_id) 
               |> Riak.update("maps", "users", user_id)
      
@@ -49,11 +48,11 @@ test "user should be able to save and retreive notification" do
 
      map_keys = :orddict.fetch_keys(user_map)
     
-      assert {"user-id", :register} in map_keys
+      assert {"user_id", :register} in map_keys
       assert {"notifications", :set} in map_keys
 
       
-     assert  :orddict.fetch({"user-id", :register}, user_map) == user_id
+     assert  :orddict.fetch({"user_id", :register}, user_map) == user_id
       notifications_set = :orddict.fetch({"notifications", :set}, user_map)
 
      assert created_notification_id in  notifications_set

@@ -5,9 +5,9 @@ defmodule CrdtToModelConvertorTest do
     alias Riak.CRDT.Flag
     alias Riak.CRDT.Map
     alias Riak.CRDT.Counter
-     alias Ghuguti.CrdtConvertor
+     alias Convertor.ModelToCrdt
 
-    test "should convert crdt map to model" do
+test "should convert crdt map to model" do
          key = Ghuguti.Helper.random_key
 
     reg_data = "Register data"
@@ -33,7 +33,7 @@ defmodule CrdtToModelConvertorTest do
      assert user.reg_key == reg_data
      assert user.flag_key == true
      assert user.counter_key == 1
-    end
+end
 
 test "should convert crdt with nested map to model" do
     reg_data = "Register data"
@@ -91,7 +91,7 @@ end
 
 test "should convert crdt with with doubly nested map to model with doubly nested model" do
     key = Ghuguti.Helper.random_key
-   CrdtConvertor.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
+   ModelToCrdt.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
    map = Riak.find("maps", "bucketmap", key) |> Map.value
    model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
    IO.inspect model
@@ -102,7 +102,7 @@ end
 
 test "should convert map with multiple nested model" do
     key = Ghuguti.Helper.random_key
-   CrdtConvertor.to_crdt(TestModelWithMultipleChildren.new) |> Riak.update("maps", "bucketmap", key)
+   ModelToCrdt.to_crdt(TestModelWithMultipleChildren.new) |> Riak.update("maps", "bucketmap", key)
    map = Riak.find("maps", "bucketmap", key) |> Map.value
    model = Convertor.CrdtToModel.to_model(map, TestModelWithMultipleChildren)
    IO.inspect model
@@ -112,6 +112,17 @@ test "should convert map with multiple nested model" do
    assert model.nested_model_2.flag_key == true
    assert model.nested_model_3.flag_key == false
 end
+
+test "should convert crdt with set to model with list" do
+    key = Ghuguti.Helper.random_key
+    ModelToCrdt.to_crdt(TestModelWithList.new) |> Riak.update("maps", "bucketmap", key)
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
+    IO.inspect map
+    model = Convertor.CrdtToModel.to_model(map, TestModelWithList)
+   assert model.reg_key == "reg_key"
+   assert model.list == Enum.sort(["hello", "world", "I", "am", "here"])
+end
+
 end
 
 
@@ -149,5 +160,13 @@ defmodule TestModelWithMultipleChildren do
 
      def new do
          %TestModelWithMultipleChildren{}
+     end
+end
+
+defmodule TestModelWithList do
+     defstruct reg_key: "reg_key", list: ["hello", "world", "I", "am", "here"]
+
+     def new do
+         %TestModelWithList{}
      end
 end

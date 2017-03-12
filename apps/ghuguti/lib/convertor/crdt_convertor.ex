@@ -1,4 +1,4 @@
-defmodule Ghuguti.CrdtConvertor do
+defmodule Convertor.ModelToCrdt do
     import Map, only: [from_struct: 1]
     alias Riak.CRDT.Map
     alias Riak.CRDT.Register
@@ -8,7 +8,7 @@ defmodule Ghuguti.CrdtConvertor do
     def to_crdt(model) when is_map(model) do
         from_struct(model)
         |> Enum.reduce(Map.new, fn({k, v}, map) -> 
-          map |> Map.put(to_string(k), get_crdt_value(v))
+                map |> Map.put(to_string(k), get_crdt_value(v))
         end)
     end
 
@@ -20,7 +20,7 @@ defmodule Ghuguti.CrdtConvertor do
        flag =  cond do
                     value -> Flag.new |> Flag.enable
                     !value -> Flag.new |> Flag.disable    
-            end
+                end
        Map.update(map, :flag, to_string(key), fn _ -> flag end)
     end
 

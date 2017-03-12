@@ -1,5 +1,5 @@
 defmodule NotificationServiceTest do
-    use ExUnit.Case
+    use Ghuguti.Case
     alias Paraaz.User
     alias Paraaz.Notification
     alias Paraaz.CategoryType.InvitationRequest

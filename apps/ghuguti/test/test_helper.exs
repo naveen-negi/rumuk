@@ -6,10 +6,10 @@ defmodule Ghuguti.Case do
   setup_all do
     on_exit fn ->
       #Riak.Helper.clean! pid
-      {:ok, users} = Riak.Bucket.keys("maps", "users") 
-       Enum.each(users, fn key -> Riak.delete( "users", key) end)
-       {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
-     Enum.each(notifications, fn key -> Riak.delete( "notifications", key) end)
+      {:ok, buckets} = Riak.Bucket.keys("maps", "bucketmap") 
+       Enum.each(buckets, fn key -> Riak.delete( "bucketmap", key) end)
+    #    {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
+    #  Enum.each(notifications, fn key -> Riak.delete( "notifications", key) end)
     end
     end
 end
