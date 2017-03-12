@@ -1,5 +1,5 @@
 defmodule NotificationTest do
-  use ExUnit.Case
+  use Ghuguti.Case
   alias Riak.CRDT.Map
   alias Riak.CRDT.Register
   alias Riak.CRDT.Flag
@@ -46,7 +46,7 @@ defmodule NotificationTest do
     category_fields = %{sender: "sender_1"}
 
      %{id: id, notification: notification} = Paraaz.Notification.new(belongs_to, category_type, category_fields)
-
+    IO.inspect(notification)
     notification |> Riak.update("maps", "notifications", id)
 
     map = Riak.find("maps", "notifications", id) |> Map.value

@@ -1,13 +1,11 @@
 defmodule Tak.NotificationServer do
     use GenServer
-    ##Client API
 
     def start_link(name) do
         GenServer.start_link(__MODULE__, :ok, name: name)
     end
 
     def save(pid, user_id, category_type, category_fields) do
-       
         GenServer.cast(pid, {:save, user_id, category_type, category_fields})
     end
 
@@ -18,12 +16,10 @@ defmodule Tak.NotificationServer do
              {:ok, user} -> notifications = Enum.map(user.notifications, 
                                                 fn x -> Tak.Notification.new(x.notification_id, x.category_type, x.category_fields)
                                                  end )
-                            user = %Tak.User{user_id: user.user_id, notifications: notifications}
-                            {:ok, user}
-
+                                                user = %Tak.User{user_id: user.user_id, notifications: notifications}
+                                                {:ok, user}
             {:error, result} ->   {:error, "not found"}
          end
-         
     end
 
     def init(:ok) do

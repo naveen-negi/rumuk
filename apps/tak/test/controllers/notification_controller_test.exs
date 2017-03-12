@@ -12,6 +12,7 @@ defmodule Tak.NotificationControllerTest do
         notification_type = Tak.CategoryType.InvitationRequest.type
         category_fields = %{sender_id: "archer"}
         response = get conn, "api/users/rin/notifications" 
+        IO.inspect response
         user = Poison.decode!(response.resp_body, as: %Tak.User{})
         assert user.user_id == "rin"
      end

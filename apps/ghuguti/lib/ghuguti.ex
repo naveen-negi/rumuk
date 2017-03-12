@@ -1,0 +1,2 @@
+defmodule Ghuguti do
+end
