@@ -5,7 +5,7 @@ defmodule ModelToCrdtConvertorTest do
   alias Convertor.ModelToCrdt
   alias Riak.CRDT.Map
   
-  test "should be able to convert a struct into crdt" do
+  test "should be able to convert a model into crdt" do
      model = BasicMap.new
      model_map = from_struct(model)
 
@@ -26,7 +26,7 @@ defmodule ModelToCrdtConvertorTest do
     assert {{"is_interested", :flag}, true} in data
  end
 
-  test "should convert struct with list to CRDT with Set" do
+  test "should convert model with list to CRDT with Set" do
      model = BasicMapWithSet.new
 
       ModelToCrdt.to_crdt(model)

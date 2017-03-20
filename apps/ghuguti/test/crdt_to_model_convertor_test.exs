@@ -74,11 +74,13 @@ test "should convert crdt with with nested map to model with nested model" do
     nested = Map.new |> Map.put(flag_key, flag)
     nested_model = "nested_model"
 
-    Map.new
-    |> Map.put(reg_key, reg)
-    |> Map.put(nested_model, nested)
-    |> Riak.update("maps", "bucketmap", key)
-
+   response = Map.new
+                |> Map.put(reg_key, reg)
+                |> Map.put(nested_model, nested)
+                |> Riak.update("maps", "bucketmap", key)
+                
+    assert response == :ok
+    
     map = Riak.find("maps", "bucketmap", key)
 
     map = map |> Map.value

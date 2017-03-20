@@ -18,7 +18,7 @@ defmodule Ghuguti.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:riak, :logger]]
+    [applications: [:riak, :logger, :credo]]
   end
 
   # Dependencies can be Hex packages:
@@ -37,7 +37,8 @@ defmodule Ghuguti.Mixfile do
   defp deps do
     [
       {:riak, "~> 1.0"},
-        { :uuid, "~> 1.1" }
+        { :uuid, "~> 1.1" },
+         {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end
