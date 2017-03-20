@@ -32,9 +32,12 @@ defmodule NotificationServiceTest do
     test "should return all of the notifications for a user" do
         user_id = "homunculi"
         clean_up(user_id)
-        save_notification(user_id)
-        save_notification(user_id)
-        save_notification(user_id)
+        response = save_notification(user_id)
+        assert response == :ok
+        response = save_notification(user_id)
+        assert response == :ok
+        response = save_notification(user_id)
+        assert response == :ok
 
         notifications = Paraaz.NotificationService.get_all_notifications(user_id)
         assert length(notifications) == 3
@@ -46,5 +49,4 @@ defmodule NotificationServiceTest do
         category_fields = %{sender_id: "rin"}
         Paraaz.NotificationService.save(user_id , category_type, category_fields)    
     end
-
 end

@@ -27,7 +27,7 @@ config :pooler, pools:
       group: :riak_test,
       max_count: 20,
       init_count: 10,
-      start_mfa: { Riak.Connection, :start_link, [] }
+      start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
     ]
   ]
 

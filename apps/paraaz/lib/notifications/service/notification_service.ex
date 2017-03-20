@@ -11,16 +11,14 @@ defmodule Paraaz.NotificationService do
           notification
           |> Riak.update("maps", "notifications", notification_id)
            user = Riak.find("maps", "users", user_id)
-          case user do
-             nil  ->    User.new(user_id, notification_id) 
-                            |> Riak.update("maps", "users", user_id)
-                        
-                            :ok
-               _ ->      user 
-                            |>  User.register_notification(notification_id)
-                            |> Riak.update("maps", "users", user_id)
-                            :ok
-           end
+         
+         result =  case user do
+                    nil  ->    User.new(user_id, notification_id) 
+                                    |> Riak.update("maps", "users", user_id)
+                    _ ->      user 
+                                    |>  User.register_notification(notification_id)
+                                    |> Riak.update("maps", "users", user_id)
+                   end
     end
 
     def get_all_notifications(user_id) do 

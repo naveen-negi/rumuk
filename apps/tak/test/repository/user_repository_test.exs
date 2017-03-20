@@ -12,11 +12,12 @@ defmodule UserRepositoryTest do
        basic_info = %Tak.BasicInfo{name: "osaka", age: "28", gender: "female"}
        educational_details = %Tak.EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
                        
-                            User.new(id)
-                              |> User.update(basic_info) 
-                              |> User.update(educational_details)
-                              |> Tak.UserRepository.save
+                         response =    User.new(id)
+                                        |> User.update(basic_info) 
+                                        |> User.update(educational_details)
+                                        |> Tak.UserRepository.save
                         
+        assert response == :ok
         user = Tak.UserRepository.get(id)
         assert user.user_id == id  
         assert user.basic_info == basic_info
