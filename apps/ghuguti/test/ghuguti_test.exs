@@ -40,12 +40,12 @@ defmodule GhugutiTest do
 
     assert {"is_interested", :flag} in map_keys
     assert {"name", :register} in map_keys
-    assert {"age", :register} in map_keys
+    assert {"age", :counter} in map_keys
     assert :orddict.size(map) == 3
 
     data = :orddict.to_list(map)
     assert {{"name", :register}, "subaru"} in data
-    assert {{"age", :register}, "30"} in data
+    assert {{"age", :counter}, 30} in data
     assert {{"is_interested", :flag}, true} in data
    end
 end
