@@ -6,6 +6,10 @@ alias Riak.CRDT.Map, as: M
         struct(kind, model)
     end
 
+    def to_model(crdt, kind)  when is_nil(crdt) do
+        nil
+    end
+
     def reduce_map(map, kind) do
         keys =  :orddict.fetch_keys(map)
         Enum.reduce( keys, %{}, fn(x, acc) -> 

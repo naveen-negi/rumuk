@@ -1,9 +1,6 @@
 defmodule Convertor.ModelToCrdt do
     import Map, only: [from_struct: 1]
-    alias Riak.CRDT.Map
-    alias Riak.CRDT.Register
-    alias Riak.CRDT.Flag
-    alias Riak.CRDT.Set
+    alias Riak.CRDT.{Map, Register, Flag, Set, Counter}
     
     def to_crdt(model) when is_map(model) do
         from_struct(model)
@@ -24,8 +21,17 @@ defmodule Convertor.ModelToCrdt do
        Map.update(map, :flag, to_string(key), fn _ -> flag end)
     end
 
+      defp update_field(map, key, value) when is_integer(value) do
+          IO.puts "it is interger yeaah"
+       Map.update(map, :counter, to_string(key), fn _ -> Counter.new |> Counter.increment(value) end)
+    end
+
     defp update_field(map, key, value) when is_binary(value) do
        Map.update(map, :register, to_string(key), fn _ -> Register.new(to_string(value)) end)
+    end
+
+     def get_crdt_value(value) when is_integer(value) do
+       Counter.new |> Counter.increment(value) 
     end
 
     def get_crdt_value(value) when is_binary(value) or is_nil(value) do
@@ -33,11 +39,6 @@ defmodule Convertor.ModelToCrdt do
             value != nil -> Register.new(to_string(value))
             value == nil -> Register.new(to_string(""))
         end
-        
-    end
-
-     def get_crdt_value(value) when is_integer(value) do
-        Register.new(to_string(value))
     end
 
      def get_crdt_value(value) when is_list(value) do

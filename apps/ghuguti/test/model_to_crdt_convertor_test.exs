@@ -1,11 +1,10 @@
 defmodule ModelToCrdtConvertorTest do
   use Ghuguti.Case
-  doctest Ghuguti
   import Map
   alias Convertor.ModelToCrdt
   alias Riak.CRDT.Map
   
-  test "should be able to convert a struct into crdt" do
+  test "should be able to convert a model into crdt" do
      model = BasicMap.new
      model_map = from_struct(model)
 
@@ -17,34 +16,35 @@ defmodule ModelToCrdtConvertorTest do
 
     assert {"is_interested", :flag} in map_keys
     assert {"name", :register} in map_keys
-    assert {"age", :register} in map_keys
+    assert {"age", :counter} in map_keys
     assert :orddict.size(map) == 3
 
     data = :orddict.to_list(map)
     assert {{"name", :register}, "subaru"} in data
-    assert {{"age", :register}, "30"} in data
+    assert {{"age", :counter}, 30} in data
     assert {{"is_interested", :flag}, true} in data
  end
 
-  test "should convert struct with list to CRDT with Set" do
+  test "should convert model with list to CRDT with Set" do
+    key = Ghuguti.Helper.random_key
      model = BasicMapWithSet.new
 
       ModelToCrdt.to_crdt(model)
-      |> Riak.update("maps", "bucketmap", model.name)
+      |> Riak.update("maps", "bucketmap", key)
 
-    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
 
     map_keys = :orddict.fetch_keys(map)
 
     assert {"is_interested", :flag} in map_keys
     assert {"name", :register} in map_keys
-    assert {"age", :register} in map_keys
+    assert {"age", :counter} in map_keys
     assert {"interests", :set} in map_keys
     assert :orddict.size(map) == 4
 
     data = :orddict.to_list(map)
     assert {{"name", :register}, model.name} in data
-    assert {{"age", :register}, to_string(model.age)} in data
+    assert {{"age", :counter}, model.age} in data
     assert {{"is_interested", :flag}, false} in data
     assert {{"is_interested", :flag}, false} in data
 
@@ -112,18 +112,19 @@ defmodule ModelToCrdtConvertorTest do
     nested_map = :orddict.fetch({"nested_struct", :map}, map)
     
     assert :orddict.fetch({"name", :register}, nested_map) == "subaru"
-    assert :orddict.fetch({"age", :register}, nested_map) == "30"
+    assert :orddict.fetch({"age", :counter}, nested_map) == 30
     assert :orddict.fetch({"is_interested", :flag}, nested_map) == true
   end
 
   test "should convert model with doubly nested struct to crdt with doubly nested map" do
+    key = Ghuguti.Helper.random_key
     first_map = MapWithNestedMap.new("mustang_2", BasicMap.new)
     model = DoublyMapWithNestedMap.new("mustang_daddy", first_map)
 
       ModelToCrdt.to_crdt(model)
-      |> Riak.update("maps", "bucketmap", model.name)
+      |> Riak.update("maps", "bucketmap", key)
 
-    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
     map_keys = :orddict.fetch_keys(map)
     assert {"name", :register} in map_keys
     assert {"nested_struct", :map} in map_keys
@@ -139,14 +140,31 @@ defmodule ModelToCrdtConvertorTest do
     doubly_nested_map = :orddict.fetch({"nested_struct", :map}, nested_map)
     
     assert :orddict.fetch({"name", :register}, doubly_nested_map) == "subaru"
-    assert :orddict.fetch({"age", :register}, doubly_nested_map) == "30"
+    assert :orddict.fetch({"age", :counter}, doubly_nested_map) == 30
     assert :orddict.fetch({"is_interested", :flag}, doubly_nested_map) == true
+  end
+
+  test "should convert model with int to crdt with counter" do
+    key = Ghuguti.Helper.random_key
+     model = MapWithCounter.new
+     model 
+     |> ModelToCrdt.to_crdt
+     |> Riak.update("maps","bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
+    IO.inspect map
+    map_keys = :orddict.fetch_keys(map)
+    assert {"name", :register} in map_keys
+    assert {"age", :counter} in map_keys
+    assert :orddict.size(map) == 2
+
+     assert :orddict.fetch({"name", :register}, map) == model.name
+    assert :orddict.fetch({"age", :counter}, map) == 23
   end
 
 
 defp given_that_user_already_exists(user_id) do
-   
-     BasicMap.new(user_id)
+      BasicMap.new(user_id)
       |> ModelToCrdt.to_crdt
       |> Riak.update("maps", "bucketmap", user_id)
 end
@@ -174,7 +192,15 @@ defmodule BasicMapWithSet do
 end
 
 defmodule BasicMapWithCounter do
-  defstruct [name: "rin_osaka", age: 23, is_interested: false, visists: 2, interests: ["shopping", "watching movies"] ]
+  defstruct name: "rin_osaka_counter", age: 23
+
+  def new do
+    %BasicMapWithCounter{}
+  end
+end
+
+defmodule MapWithCounter do
+  defstruct name: "rin_osaka_counter", age: 23
 
   def new do
     %BasicMapWithCounter{}
