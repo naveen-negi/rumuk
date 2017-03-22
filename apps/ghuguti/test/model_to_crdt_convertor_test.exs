@@ -53,46 +53,6 @@ defmodule ModelToCrdtConvertorTest do
     assert "watching movies" in set
  end
 
-  test "should update a register type" do
-     user_id = "saber"
-     given_that_user_already_exists(user_id)
-     key = "age"
-     updated_value = "20"
-     user = Riak.find("maps", "bucketmap", user_id) 
-
-    updated_map = ModelToCrdt.update(user, [age: updated_value])
-     
-     updated_map |> Riak.update("maps", "bucketmap",user_id)
-
-     map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    map_keys = :orddict.fetch_keys(map)
-
-    data = :orddict.to_list(map)
-    assert {{"age", :register}, to_string(updated_value)} in data
-  end
-
-  test "should update a Flag(boolean) type" do
-       user_id = "wrath"
-       user = BasicMap.new(user_id)
- 
-       user = %{ user | is_interested: true}
-      
-        user 
-        |> ModelToCrdt.to_crdt
-        |> Riak.update("maps", "bucketmap", user_id)
-
-     user = Riak.find("maps", "bucketmap", user_id) 
-
-    updated_map = ModelToCrdt.update(user, [is_interested: false])
-     updated_map |> Riak.update("maps", "bucketmap",user_id)
-
-     map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    map_keys = :orddict.fetch_keys(map)
-
-    data = :orddict.to_list(map)
-    assert {{"is_interested", :flag}, false} in data
-  end
-
   test "should convert model with nested struct to crdt with nested map" do
     model = MapWithNestedMap.new("mustang_1", BasicMap.new)
 

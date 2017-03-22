@@ -9,27 +9,6 @@ defmodule Convertor.ModelToCrdt do
         end)
     end
 
-    def update(model, list) do
-        Enum.reduce(list, model, fn {k,v}, acc -> update_field(acc, k, v) end)
-    end
-
-      defp update_field(map, key, value) when is_boolean(value) do
-       flag =  cond do
-                    value -> Flag.new |> Flag.enable
-                    !value -> Flag.new |> Flag.disable    
-                end
-       Map.update(map, :flag, to_string(key), fn _ -> flag end)
-    end
-
-      defp update_field(map, key, value) when is_integer(value) do
-          IO.puts "it is interger yeaah"
-       Map.update(map, :counter, to_string(key), fn _ -> Counter.new |> Counter.increment(value) end)
-    end
-
-    defp update_field(map, key, value) when is_binary(value) do
-       Map.update(map, :register, to_string(key), fn _ -> Register.new(to_string(value)) end)
-    end
-
      def get_crdt_value(value) when is_integer(value) do
        Counter.new |> Counter.increment(value) 
     end
