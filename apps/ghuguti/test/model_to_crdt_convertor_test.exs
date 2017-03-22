@@ -26,12 +26,13 @@ defmodule ModelToCrdtConvertorTest do
  end
 
   test "should convert model with list to CRDT with Set" do
+    key = Ghuguti.Helper.random_key
      model = BasicMapWithSet.new
 
       ModelToCrdt.to_crdt(model)
-      |> Riak.update("maps", "bucketmap", model.name)
+      |> Riak.update("maps", "bucketmap", key)
 
-    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
 
     map_keys = :orddict.fetch_keys(map)
 
@@ -116,13 +117,14 @@ defmodule ModelToCrdtConvertorTest do
   end
 
   test "should convert model with doubly nested struct to crdt with doubly nested map" do
+    key = Ghuguti.Helper.random_key
     first_map = MapWithNestedMap.new("mustang_2", BasicMap.new)
     model = DoublyMapWithNestedMap.new("mustang_daddy", first_map)
 
       ModelToCrdt.to_crdt(model)
-      |> Riak.update("maps", "bucketmap", model.name)
+      |> Riak.update("maps", "bucketmap", key)
 
-    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
     map_keys = :orddict.fetch_keys(map)
     assert {"name", :register} in map_keys
     assert {"nested_struct", :map} in map_keys
@@ -143,12 +145,13 @@ defmodule ModelToCrdtConvertorTest do
   end
 
   test "should convert model with int to crdt with counter" do
+    key = Ghuguti.Helper.random_key
      model = MapWithCounter.new
      model 
      |> ModelToCrdt.to_crdt
-     |> Riak.update("maps","bucketmap", model.name)
+     |> Riak.update("maps","bucketmap", key)
 
-    map = Riak.find("maps", "bucketmap", model.name) |> Map.value
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
     IO.inspect map
     map_keys = :orddict.fetch_keys(map)
     assert {"name", :register} in map_keys
