@@ -4,7 +4,7 @@ defmodule Tak.NotificationControllerTest do
     test "should save notification for the given user", %{conn: conn} do
         notification_type = Tak.CategoryType.InvitationRequest.type
         category_fields = %{sender_id: "archer"}
-        conn = post conn, "api/users/rin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
+        conn = post build_conn, "api/users/rin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
         assert conn.status == 204
     end
 
@@ -18,9 +18,11 @@ defmodule Tak.NotificationControllerTest do
     #  end
 
      test "should return not found for non existent user" do
-          response = get conn, "api/users/unknow/notifications" 
+          response = get build_conn, "api/users/unknow/notifications" 
           assert response.status == 404
      end
+
+
 
     defp save() do
         notification_type = Tak.CategoryType.InvitationRequest.type
