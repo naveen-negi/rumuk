@@ -1,4 +1,4 @@
-defmodule Tak.NotificationServer do
+defmodule Bhaduli.NotificationServer do
     use GenServer
 
     def start_link(name) do
@@ -10,16 +10,15 @@ defmodule Tak.NotificationServer do
     end
 
     def lookup(pid, user_id) do
-         response = GenServer.call(pid, {:lookup, user_id})
-         IO.inspect response
-         case response do
-             {:ok, user} -> notifications = Enum.map(user.notifications, 
-                                                fn x -> Tak.Notification.new(x.notification_id, x.category_type, x.category_fields)
-                                                 end )
-                                                user = %Tak.User{user_id: user.user_id, notifications: notifications}
-                                                {:ok, user}
-            {:error, result} ->   {:error, "not found"}
-         end
+        #  response = GenServer.call(pid, {:lookup, user_id})
+        #  case response do
+        #      {:ok, user} -> notifications = Enum.map(user.notifications, 
+        #                                         fn x -> Notification.new(x.notification_id, x.category_type, x.category_fields)
+        #                                          end )
+        #                                         user = %User{user_id: user.user_id, notifications: notifications}
+        #                                         {:ok, user}
+        #     {:error, result} ->   {:error, "not found"}
+        #  end
     end
 
     def init(:ok) do

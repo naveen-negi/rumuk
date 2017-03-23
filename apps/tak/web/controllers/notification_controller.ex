@@ -12,8 +12,6 @@ defmodule Tak.NotificationController do
                                     |> put_resp_content_type("application/json")
                                     |> send_resp(404, "")
         end
-        
-      
     end
 
     def create(conn, params) do

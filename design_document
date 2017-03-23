@@ -1,0 +1,65 @@
+domain driven design
+user has notifications 
+notifications has type and fields and id 
+should notification be a aggregate root or within the user
+
+what should be a aggregate --> anything that you are storing in database should be a aggregate 
+and whatever you are storing in database should have a repository to do that
+once you have repository, their could be two kind of service, one is infrastrure service and another could be domain service
+
+if notification is an aggregate what are the properties that you could expose
+add a notification to user 
+which mean notification has a user aggregate 
+
+association should not be bidirectional
+user should have a notification aggregate 
+it feels aggregate should always have multiple models
+
+
+so Notification aggregate can also return you a list of notifications for a given user
+which essentially means that this aggregate does not represent one single notification but multiple
+
+operations like
+get_notifications(user_id)
+save(notification, user_id)
+get_notification(user_id)
+get_notification_of_type(type) --> this is like group by clause
+
+
+User aggregate should be composed of notification aggregate
+-------------------------------------------------------------------
+Services
+user service --> called from controller 
+saves user details
+fetches user details
+notification service 
+save notifications against given user
+and add that notification to the user 
+
+what about invariants, like non-existent notification should not be fetched or given to user
+
+
+search
+should search be a different umbrella project
+called from main web app
+search for a user where age is this and gender is this and caste is this
+does this mean duplication of models at two differnt places
+yeah there can be 
+make web app devoid of any buissness logic
+
+I can create notification and user as sepereate umbrella project and serialize the access using gen server 
+because there is a buissness logic when to delete a notification and how to group the notifications 
+like grouping notification by a given type and generating on single notification, which essentially means it is 
+transformation on the Notification.
+
+so this grouping logic should reside in the notification aggregate which exposes methods like 
+transform_into_one(group_by(notification_type))
+and gives back one single notification and user 
+
+authentication is another bit that needs to be in a seperate umbrella project and it should use ecto and postgres
+
+
+
+
+chat history
+
