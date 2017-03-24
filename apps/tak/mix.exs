@@ -40,9 +40,7 @@ defmodule Tak.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:poison, "~> 2.0"},
-     {:pooler, "~> 1.5"},
-     { :uuid, "~> 1.1" },
-     {:riak, "~> 1.0"},
+     {:phoenix_ecto, "~> 3.0"},
      {:paraaz, in_umbrella: true},
      {:ghuguti, in_umbrella: true}
     ]

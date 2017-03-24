@@ -17,17 +17,10 @@ defmodule Tak.NotificationControllerTest do
     #     assert user.user_id == "rin"
     #  end
 
-    test "should be able to create user with basic info" do
-        conn = post conn, "api/users/", %{name: "erin", age: 33, isMale: false}
-        assert conn.status == 204
-    end
-
-     test "should return not found for non existent user" do
+   test "should return not found for non existent user" do
           response = get build_conn, "api/users/unknow/notifications" 
           assert response.status == 404
      end
-
-
 
     defp save() do
         notification_type = Tak.CategoryType.InvitationRequest.type
