@@ -6,15 +6,15 @@ import Ecto.Changeset
     field :name, :string
     field :age, :integer
     field :contact_number, :integer
-    field :dob, :integer
-    field :city, :string
+    field :date_of_birth, :integer
+    field :current_city, :string
     field :hometown, :string
     belongs_to :user, Tak.User
   end
 
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, [:name, :age, :contact_number, :dob, :city, :hometown, :user_id])
+    |> cast(params, [:name, :age, :contact_number, :date_of_birth, :current_city, :hometown, :user_id])
     |> validate_required([:name, :age])
   end
 

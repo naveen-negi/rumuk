@@ -1,12 +1,12 @@
 defmodule Tak.NotificationControllerTest do
     use Tak.ConnCase
     
-    # test "should save notification for the given user", %{conn: conn} do
-    #     notification_type = Tak.CategoryType.InvitationRequest.type
-    #     category_fields = %{sender_id: "archer"}
-    #     conn = post build_conn, "api/users/rin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
-    #     assert conn.status == 204
-    # end
+    test "should save notification for the given user", %{conn: conn} do
+        notification_type = Tak.CategoryType.InvitationRequest.type
+        category_fields = %{sender_id: "archer"}
+        conn = post build_conn, "api/users/rin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
+        assert conn.status == 204
+    end
 
     #  test "should get notifications for the given user", %{conn: conn} do
     #     notification_type = Tak.CategoryType.InvitationRequest.type

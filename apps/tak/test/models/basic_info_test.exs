@@ -8,6 +8,7 @@ defmodule BasicInfoTest do
 
   test "changeset with valid attributes" do
     changeset = BasicInfo.changeset(%BasicInfo{}, @valid_attrs)
+    IO.inspect changeset
     assert changeset.valid?
   end
 
@@ -15,4 +16,5 @@ defmodule BasicInfoTest do
     changeset = BasicInfo.changeset(%BasicInfo{}, @invalid_attrs)
     assert changeset.valid? == false
   end
+  
 end

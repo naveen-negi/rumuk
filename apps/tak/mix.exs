@@ -41,6 +41,7 @@ defmodule Tak.Mixfile do
      {:cowboy, "~> 1.0"},
      {:poison, "~> 2.0"},
      {:phoenix_ecto, "~> 3.0"},
+     { :uuid, "~> 1.1" },
      {:paraaz, in_umbrella: true},
      {:ghuguti, in_umbrella: true}
     ]
