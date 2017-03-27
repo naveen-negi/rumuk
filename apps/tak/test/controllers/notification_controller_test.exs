@@ -1,5 +1,6 @@
 defmodule Tak.NotificationControllerTest do
     use Tak.ConnCase
+    @moduletag :notifications
     
     test "should save notification for the given user", %{conn: conn} do
         notification_type = Tak.CategoryType.InvitationRequest.type
@@ -8,14 +9,14 @@ defmodule Tak.NotificationControllerTest do
         assert conn.status == 204
     end
 
-    #  test "should get notifications for the given user", %{conn: conn} do
-    #     notification_type = Tak.CategoryType.InvitationRequest.type
-    #     category_fields = %{sender_id: "archer"}
-    #     response = get conn, "api/users/rin/notifications" 
-    #     IO.inspect response
-    #     user = Poison.decode!(response.resp_body, as: %Tak.User{})
-    #     assert user.user_id == "rin"
-    #  end
+     test "should get notifications for the given user", %{conn: conn} do
+        notification_type = Tak.CategoryType.InvitationRequest.type
+        category_fields = %{sender_id: "archer"}
+        response = get conn, "api/users/rin/notifications" 
+        IO.inspect response
+        user = Poison.decode!(response.resp_body, as: %Tak.User{})
+        assert user.user_id == "rin"
+     end
 
 #    test "should return not found for non existent user" do
 #           response = get build_conn, "api/users/unknow/notifications" 

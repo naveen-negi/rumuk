@@ -6,12 +6,12 @@ defmodule Tak.Case do
   setup_all do
     on_exit fn ->
       #Riak.Helper.clean! pid
-      {:ok, users} = Riak.Bucket.keys("maps", "users") 
-       Enum.each(users, fn key -> Riak.delete("maps", "users", key) end)
+      # {:ok, users} = Riak.Bucket.keys("maps", "users") 
+      #  Enum.each(users, fn key -> Riak.delete("maps", "users", key) end)
       
-       {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
-      Enum.each(notifications, fn key -> Riak.delete("maps", "notifications", key) end)
-    end
+      #  {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
+      # Enum.each(notifications, fn key -> Riak.delete("maps", "notifications", key) end)
+     end
     end
 end
 

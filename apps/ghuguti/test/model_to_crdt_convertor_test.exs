@@ -122,6 +122,16 @@ defmodule ModelToCrdtConvertorTest do
     assert :orddict.fetch({"age", :counter}, map) == 23
   end
 
+  test "should convert model with list to crdt with set" do
+     key = Ghuguti.Helper.random_key
+      model = ModelWithSet.new
+              |> ModelToCrdt.to_crdt
+              |> Riak.update("maps","bucketmap", key)
+              
+      map = Riak.find("maps", "bucketmap", key) |> Map.value
+
+  end
+
 
 defp given_that_user_already_exists(user_id) do
       BasicMap.new(user_id)
@@ -183,4 +193,17 @@ defmodule DoublyMapWithNestedMap do
   end
 end
 
+defmodule ModelWithList do
+  defstruct id: nil, notifications: []
+
+  def new do
+    id = "rin_osaka"
+    notifications = [Notification.new, Notification.new]
+  end
+end
+
+defmodule Notification do
+   defstruct id: "some_random_shit", category_type: "invitations", category_fields: %{sender: "some random guy", content: "I don't freaking care'"}
+
+end
 

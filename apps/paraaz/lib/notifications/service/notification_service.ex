@@ -2,7 +2,11 @@ defmodule Paraaz.NotificationService do
     alias Paraaz.Notification
     alias Paraaz.User
     alias Riak.CRDT.Map
+    alias Ghuguti
     alias Paraaz.NotificationMapper
+
+    @bucket_type "maps"
+    @bucket_name "notifications"
 
     def save(user_id , category_type, category_fields) do
          %{id: notification_id, notification: notification} =
@@ -10,20 +14,19 @@ defmodule Paraaz.NotificationService do
 
           notification
           |> Riak.update("maps", "notifications", notification_id)
-           user = Riak.find("maps", "users", user_id)
+           user = Riak.find("maps", "notification_users", user_id)
          
          result =  case user do
                     nil  ->    User.new(user_id, notification_id) 
-                                    |> Riak.update("maps", "users", user_id)
+                                    |> Riak.update("maps", "notification_users", user_id)
                     _ ->      user 
                                     |>  User.register_notification(notification_id)
-                                    |> Riak.update("maps", "users", user_id)
+                                    |> Riak.update("maps", "notification_users", user_id)
                    end
     end
 
     def get_all_notifications(user_id) do 
-        user = Riak.find("maps", "users", user_id)
-        IO.inspect user
+        user = Riak.find("maps", "notification_users", user_id)
         case user do
             nil -> {:error, notifications: []}
             _   ->    user_map =   user |> Map.value
@@ -35,7 +38,7 @@ defmodule Paraaz.NotificationService do
         end
 
         def get_user(user_id) do
-            notification = get_all_notifications(user_id);
+            notification = get_all_notifications(user_id)
             
             case notification do
                 {:error, notifications: []} -> {:error, "user not found"}

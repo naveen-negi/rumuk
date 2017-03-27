@@ -18,7 +18,7 @@ defmodule Paraaz.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:riak, :logger],
+    [applications: [:riak, :logger, :ghuguti],
      mod: {Paraaz, []}]
   end
 
@@ -38,7 +38,8 @@ defmodule Paraaz.Mixfile do
   defp deps do
     [
         {:riak, "~> 1.0"},
-        { :uuid, "~> 1.1" }
+        { :uuid, "~> 1.1" },
+        {:ghuguti, in_umbrella: true}
     ]
   end
 
