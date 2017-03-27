@@ -33,7 +33,7 @@ defmodule NotificationserverTest do
         assert Enum.count(user.notifications) == 2
         assert Enum.any?(user.notifications, fn x -> assert x.category_type == "invitation_request" &&
                                                       assert  x.category_fields == 
-                                                      %{ "content" => "hello there, how are you ?", "sender" => "rin",}
+                                                      %{:content => "hello there, how are you ?", :sender => "rin"}
                                          end)
     end
 

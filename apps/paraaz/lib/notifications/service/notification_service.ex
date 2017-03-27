@@ -31,9 +31,9 @@ defmodule Paraaz.NotificationService do
             nil -> {:error, notifications: []}
             _   ->    user_map =   user |> Map.value
                       :orddict.fetch({"notifications", :set}, user_map)
-                      |> Enum.map(fn x -> Riak.find("maps","notifications", x) end) 
+                      |> Enum.map(fn x -> Riak.find("maps","notifications", x) |> Map.value end) 
                       |> Enum.filter(fn x -> !is_nil(x) end)
-                      |> Enum.map(fn x -> NotificationMapper.to_domain(x) end)
+                      |> Enum.map(fn x -> Ghuguti.to_model(x, Paraaz.Domain.Notification) end)
             end
         end
 
