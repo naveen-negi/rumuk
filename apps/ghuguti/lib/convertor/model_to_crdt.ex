@@ -1,8 +1,10 @@
 defmodule Convertor.ModelToCrdt do
-    import Map, only: [from_struct: 1]
+    import Map, only: [from_struct: 1, has_key?: 2]
     alias Riak.CRDT.{Map, Register, Flag, Set, Counter}
     
     def to_crdt(model) when is_map(model) do
+        IO.puts "====================="
+        IO.inspect model
         from_struct(model)
         |> Enum.reduce(Map.new, fn({k, v}, map) -> 
                 map |> Map.put(to_string(k), get_crdt_value(v))
@@ -25,7 +27,9 @@ defmodule Convertor.ModelToCrdt do
     end
 
      def get_crdt_value(value) when is_map(value) do
-         nested_map = from_struct(value)
+        
+          nested_map = if has_key?(value, :__struct__), do: from_struct(value), else: value
+                        
        Enum.reduce(nested_map, Map.new, fn({k, v}, map) -> 
           map |> Map.put(to_string(k), get_crdt_value(v))
         end)

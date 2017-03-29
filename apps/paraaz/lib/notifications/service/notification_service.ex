@@ -1,6 +1,6 @@
 defmodule Paraaz.NotificationService do
-    alias Paraaz.Notification
-    alias Paraaz.User
+    alias Paraaz.Domain.Notification
+    alias Paraaz.Domain.User
     alias Riak.CRDT.Map
     alias Ghuguti
     alias Paraaz.NotificationMapper
@@ -9,20 +9,30 @@ defmodule Paraaz.NotificationService do
     @bucket_name "notifications"
 
     def save(user_id , category_type, category_fields) do
-         %{id: notification_id, notification: notification} =
-          Notification.new(user_id, category_type, category_fields)
+         notification_id = get_new_notification_id(user_id, category_type)
+        
+        Notification.new(user_id, notification_id, category_type, category_fields)
+                     |> Ghuguti.to_crdt
+                     |> Riak.update("maps", "notifications", notification_id)
 
-          notification
-          |> Riak.update("maps", "notifications", notification_id)
-           user = Riak.find("maps", "notification_users", user_id)
+           user = Riak.find("maps", "notification_users", user_id) 
          
          result =  case user do
-                    nil  ->    User.new(user_id, notification_id) 
+                    nil  ->         User.new(user_id) 
+                                    |> User.add_notification(notification_id)
+                                    |> Ghuguti.to_crdt
                                     |> Riak.update("maps", "notification_users", user_id)
-                    _ ->      user 
-                                    |>  User.register_notification(notification_id)
+                
+                    _ ->            user 
+                                    |> Map.value
+                                    |> Ghuguti.to_model
+                                    |> User.add_notification(notification_id)
                                     |> Riak.update("maps", "notification_users", user_id)
                    end
+    end
+
+    defp get_new_notification_id(user_id, category_type) do
+        user_id <> "_" <> category_type <> "_"  <> UUID.uuid1()
     end
 
     def get_all_notifications(user_id) do 

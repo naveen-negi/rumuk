@@ -124,10 +124,10 @@ defmodule ModelToCrdtConvertorTest do
 
   test "should convert model with list to crdt with set" do
      key = Ghuguti.Helper.random_key
+      
       model = ModelWithSet.new
               |> ModelToCrdt.to_crdt
               |> Riak.update("maps","bucketmap", key)
-              
       map = Riak.find("maps", "bucketmap", key) |> Map.value
 
   end
