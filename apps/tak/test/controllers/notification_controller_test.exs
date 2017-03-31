@@ -3,15 +3,15 @@ defmodule Tak.NotificationControllerTest do
     @moduletag :notifications
     
     test "should save notification for the given user", %{conn: conn} do
-        notification_type = Tak.CategoryType.InvitationRequest.type
+        notification_type =Tak.Notifications.CategoryType.InvitationRequest.type
         category_fields = %{sender_id: "archer"}
         conn = post build_conn, "api/users/rin/notifications", %{category_type: notification_type.value, category_fields: category_fields}
         assert conn.status == 204
     end
 
      test "should get notifications for the given user", %{conn: conn} do
-        notification_type = Tak.CategoryType.InvitationRequest.type
-        category_fields = %{sender_id: "archer"}
+        # notification_type = Tak.CategoryType.InvitationRequest.type
+        # category_fields = %{sender_id: "archer"}
         response = get conn, "api/users/rin/notifications" 
         IO.inspect response
         user = Poison.decode!(response.resp_body, as: %Tak.User{})

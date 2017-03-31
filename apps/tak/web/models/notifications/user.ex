@@ -6,7 +6,8 @@ defmodule Tak.Notifications.User do
     end
 
     def add_notification(user, %Tak.Notifications.Notification{} = notification) do
-          notifications = [notification | user.notifications]
+          notifications =  user.notifications ++ [notification]
+          IO.inspect notifications
           %Tak.Notifications.User{id: user.id, notifications: notifications}
     end
 
