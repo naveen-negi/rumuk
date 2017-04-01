@@ -1,19 +1,13 @@
 defmodule Tak.NotificationServer do
     use GenServer
-    alias Tak.Notifications.User
+    alias Tak.Notifications.{User, Notification}
 
     def start_link(name) do
         GenServer.start_link(__MODULE__, :ok, name: name)
     end
-
-    def save(pid, user_id, category_type, category_fields) do
-        
-        GenServer.cast(pid, {:save, user_id, category_type, category_fields})
-    end
-
     def save(pid, user) do
         Enum.each(user.notifications, fn x -> 
-             GenServer.cast(pid, {:save, user.user_id, x.category_type, x.category_fields})
+             GenServer.cast(pid, {:save, user})
              end)
     end
 

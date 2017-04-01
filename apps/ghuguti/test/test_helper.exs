@@ -8,6 +8,8 @@ defmodule Ghuguti.Case do
       {:ok, keys} = Riak.Bucket.keys("maps", "bucketmap") 
        Enum.each(keys, fn key -> Riak.delete("maps", "bucketmap", key) end)
        Enum.each(keys, fn key -> Riak.find("maps", "bucketmap", key) end)
+      
+     
     end
     end
 end

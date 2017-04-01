@@ -1,5 +1,5 @@
 defmodule NotificationServiceTest do
-    use Ghuguti.Case
+    use Paraaz.Case
     alias Paraaz.User
     alias Paraaz.Notification
     alias Paraaz.CategoryType.InvitationRequest
@@ -21,17 +21,14 @@ defmodule NotificationServiceTest do
 
     test "should be able to append new notification to an existing user" do
         user_id = "father"
-        clean_up(user_id)
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
         ok_response = Paraaz.NotificationService.save(user_id , category_type, category_fields)
         assert ok_response == :ok
-        clean_up(user_id)
     end
 
     test "should return all of the notifications for a user" do
         user_id = "homunculi"
-        clean_up(user_id)
         response = save_notification(user_id)
         assert response == :ok
         response = save_notification(user_id)
@@ -41,7 +38,10 @@ defmodule NotificationServiceTest do
 
         notifications = Paraaz.NotificationService.get_all_notifications(user_id)
         assert length(notifications) == 3
-        clean_up(user_id)
+        Enum.each(notifications, fn(x) -> assert x.category_type == InvitationRequest.type.value &&
+                                          assert x.category_fields == %{sender_id: "rin"} 
+                                        end) 
+
     end
    
     defp save_notification(user_id) do

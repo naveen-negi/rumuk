@@ -14,7 +14,7 @@ defmodule Paraaz.NotificationService do
         Notification.new(user_id, notification_id, category_type, category_fields)
                      |> Ghuguti.to_crdt
                      |> Riak.update("maps", "notifications", notification_id)
-
+                    
            user = Riak.find("maps", "notification_users", user_id) 
          
          result =  case user do
@@ -23,11 +23,13 @@ defmodule Paraaz.NotificationService do
                                     |> Ghuguti.to_crdt
                                     |> Riak.update("maps", "notification_users", user_id)
                 
-                    _ ->            user 
-                                    |> Map.value
-                                    |> Ghuguti.to_model
-                                    |> User.add_notification(notification_id)
-                                    |> Riak.update("maps", "notification_users", user_id)
+                    _ ->           user_model =  user 
+                                                    |> Map.value
+                                                    |> Ghuguti.to_model(User)
+                                                    |> User.add_notification(notification_id)
+
+                                    Ghuguti.update_crdt(user, [:notifications, user_model.notifications])
+                                            |> Riak.update("maps", "notification_users", user_id)
                    end
     end
 
@@ -52,8 +54,8 @@ defmodule Paraaz.NotificationService do
             
             case notification do
                 {:error, notifications: []} -> {:error, "user not found"}
-                _ -> user = Paraaz.UserMapper.to_domain(user_id, get_all_notifications(user_id))
-                    {:ok, user}
+                _ -> user = %Paraaz.Domain.User{user_id: user_id, notifications: get_all_notifications(user_id) }
+                     {:ok, user}
             end
         end
 end

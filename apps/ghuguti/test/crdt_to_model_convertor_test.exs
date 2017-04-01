@@ -35,6 +35,8 @@ test "should convert crdt map to model" do
      assert user.counter_key == 1
 end
 
+
+
 test "should convert crdt with nested map to model" do
     reg_data = "Register data"
     reg = Register.new(reg_data)
@@ -96,7 +98,6 @@ test "should convert crdt with with doubly nested map to model with doubly neste
    ModelToCrdt.to_crdt(TestModelWithDoublyNestedHierarchy.new) |> Riak.update("maps", "bucketmap", key)
    map = Riak.find("maps", "bucketmap", key) |> Map.value
    model = Convertor.CrdtToModel.to_model(map, TestModelWithDoublyNestedHierarchy)
-   IO.inspect model
    assert model.reg_key == "reg_key_top"
    assert model.nested_model_parrent.reg_key == "reg_key"
    assert model.nested_model_parrent.nested_model.flag_key == true
@@ -107,7 +108,6 @@ test "should convert map with multiple nested model" do
    ModelToCrdt.to_crdt(TestModelWithMultipleChildren.new) |> Riak.update("maps", "bucketmap", key)
    map = Riak.find("maps", "bucketmap", key) |> Map.value
    model = Convertor.CrdtToModel.to_model(map, TestModelWithMultipleChildren)
-   IO.inspect model
    assert model.reg_key == "reg_key_top"
    assert model.nested_model_1.reg_key == "reg_key"
    assert model.nested_model_1.nested_model.flag_key == true
@@ -119,7 +119,6 @@ test "should convert crdt with set to model with list" do
     key = Ghuguti.Helper.random_key
     ModelToCrdt.to_crdt(TestModelWithList.new) |> Riak.update("maps", "bucketmap", key)
     map = Riak.find("maps", "bucketmap", key) |> Map.value
-    IO.inspect map
     model = Convertor.CrdtToModel.to_model(map, TestModelWithList)
    assert model.reg_key == "reg_key"
    assert model.list == Enum.sort(["hello", "world", "I", "am", "here"])

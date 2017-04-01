@@ -14,7 +14,7 @@ defmodule Tak.Case do
        Enum.each(users, fn key -> Riak.delete("maps", "notification_users", key) end)
        Enum.each(users, fn key -> Riak.find("maps", "notification_users", key) end)
       
-       {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
+      {:ok, notifications} = Riak.Bucket.keys("maps", "notifications") 
       Enum.each(notifications, fn key -> Riak.delete("maps", "notifications", key) end)
       Enum.each(notifications, fn key -> Riak.find("maps", "notifications", key) end)
      end

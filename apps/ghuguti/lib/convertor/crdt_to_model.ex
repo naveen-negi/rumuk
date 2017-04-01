@@ -40,4 +40,6 @@ alias Riak.CRDT.Map, as: M
            {value, :map} -> String.to_atom(value)
        end 
     end
+
+  
 end

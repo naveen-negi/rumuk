@@ -27,8 +27,6 @@ defmodule NotificationserverTest do
         given_that_notifications_exists_for_user(user_id)
 
         {:reply,  {:ok, user}, state} = NotificationServer.handle_call({:lookup, user_id}, self, %{})
-        IO.inspect user
-        # model = Ghuguti.to_model(user, )
         assert user != nil
         assert Enum.count(user.notifications) == 2
         assert Enum.any?(user.notifications, fn x -> assert x.category_type == "invitation_request" &&
