@@ -12,10 +12,11 @@ defmodule Bhaduli.UserRepository do
 
     def get(user_id) do
         case Riak.find(@bucket_type,@bucket_name,user_id)  do
-           nil  -> {:not_found, "user not found"}
-           user -> user
-                    |> M.value 
-                    |> Ghuguti.to_model(User)
+           nil  -> {:error, "user not found"}
+            user -> user = user
+                            |> M.value 
+                            |> Ghuguti.to_model(User)
+                    {:ok, user}
         end
     end
 

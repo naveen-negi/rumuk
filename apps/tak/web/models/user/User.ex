@@ -8,6 +8,8 @@ defmodule Tak.User do
     end
 
     def update(user, %BasicInfo{} = data)  do
+        # IO.puts "=====================basic info data =============="
+        # IO.inspect data
         %Tak.User{user | basic_info: data}
     end
 
