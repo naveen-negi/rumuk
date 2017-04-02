@@ -31,11 +31,13 @@ defmodule UserControllerTest do
 
     test "should be able to get basic info with given id" do
         user_id = Tak.Helper.random_key
-       conn = post build_conn, "api/users/#{user_id}/basic_info", %{name: "erin", age: 33, gender: "female"}
+        basic_info = %{name: "erin", age: 33, gender: "female"}
+       conn = post build_conn, "api/users/#{user_id}/basic_info", basic_info
         assert conn.status == 204
 
         conn = get build_conn, "api/users/#{user_id}/basic_info"
         assert conn.status == 200
+        assert conn.resp_body == Poison.encode!(basic_info)
 
     end
 end

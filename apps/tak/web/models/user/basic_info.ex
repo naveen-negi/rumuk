@@ -1,7 +1,7 @@
 defmodule Tak.User.BasicInfo do
 use Ecto.Schema
 import Ecto.Changeset
-@derive {Poison.Encoder}
+@derive {Poison.Encoder, only: [:name, :age, :gender]}
 
   schema "basic_info" do
     field :name, :string
