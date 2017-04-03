@@ -25,10 +25,17 @@ defmodule Tak.UserController do
     def get_basic_info(conn, _params) do
         user_id = conn.params["user_id"]
              user = Tak.UserServer.lookup(user_id)
-            #  basic_info = from_ecto(user.basic_info)
                       conn
                       |> put_resp_content_type("application/json")
                       |> send_resp(200, Poison.encode!(user.basic_info))
+    end
+
+    def get_educational_details(conn, _params) do
+        user_id = conn.params["user_id"]
+             user = Tak.UserServer.lookup(user_id)
+                      conn
+                      |> put_resp_content_type("application/json")
+                      |> send_resp(200, Poison.encode!(user.educational_details))
     end
 
     def create_educational_details(conn, _params) do
@@ -49,9 +56,4 @@ defmodule Tak.UserController do
                     
         end
     end
-
-      defp from_ecto(model) do
-      model |> Map.delete(:__meta__) |> from_struct
-   end
-
 end

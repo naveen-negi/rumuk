@@ -23,26 +23,19 @@ defmodule Tak.UserServer do
 
     def handle_call({:lookup, user_id}, _from, state) do
          case Bhaduli.UserRepository.get(user_id) do
-                {:ok, user} ->  #IO.inspect user
-                                basic_info = struct(Tak.User.BasicInfo, from_struct(user.basic_info))
+                {:ok, user} ->  basic_info = struct(Tak.User.BasicInfo, from_struct(user.basic_info))
                                 educational_details = struct(Tak.User.EducationalDetails, from_struct(user.educational_details))
                                 user_dto = Tak.User.new(user.user_id)
                                             |> Tak.User.update(basic_info)
                                             |> Tak.User.update(educational_details)
-                                    IO.inspect user_dto
                                 {:reply, user_dto, state}
-
              {:error, reasons} -> {:error, reasons}
             end
-
-       
     end
 
    def handle_cast({:save, user}, state) do
         basic_info = struct(Bhaduli.User.BasicInfo, from_ecto(user.basic_info))
         educational_details = struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
-        # IO.inspect basic_info
-        # IO.inspect educational_details
                               response = User.new(user.id)
                                         |> User.update(basic_info)
                                         |> User.update(educational_details)

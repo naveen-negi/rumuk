@@ -16,7 +16,7 @@ defmodule UserRepositoryTest do
                                         |> UserRepository.save
                         
         assert response == :ok
-        user = UserRepository.get(id)
+        {:ok, user} = UserRepository.get(id)
         assert user.user_id == id  
         assert user.basic_info == basic_info
         assert user.educational_details == educational_details
@@ -35,7 +35,7 @@ defmodule UserRepositoryTest do
         params = %{name: "guilty", age: 33, gender: "female"}
         UserRepository.update(:basic_info, id, params);
 
-        updated_user = UserRepository.get(id)
+        {:ok, updated_user} = UserRepository.get(id)
         assert updated_user.basic_info.name == "guilty"
         assert updated_user.basic_info.age == 33
         
@@ -54,7 +54,7 @@ defmodule UserRepositoryTest do
         params = %{name: "guilty"}
         UserRepository.update(:basic_info, id, params);
 
-        updated_user = UserRepository.get(id)
+        {:ok, updated_user} = UserRepository.get(id)
         assert updated_user.basic_info.name == "guilty"
         assert updated_user.basic_info.age == 28
         assert updated_user.basic_info.gender == "female"
@@ -71,7 +71,7 @@ defmodule UserRepositoryTest do
         params = %{senior_secondary: "Doon International school"}
         UserRepository.update(:educational_details, id, params);
 
-        updated_user = UserRepository.get(id)
+         {:ok, updated_user} = UserRepository.get(id)
         assert updated_user.educational_details.senior_secondary == "Doon International school"
     end
 end

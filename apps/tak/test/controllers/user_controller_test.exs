@@ -10,6 +10,18 @@ defmodule UserControllerTest do
         assert conn.status == 204
     end
 
+
+    test "should be able to get basic info with given id" do
+        user_id = Tak.Helper.random_key
+        basic_info = %{name: "erin", age: 33, gender: "female"}
+       conn = post build_conn, "api/users/#{user_id}/basic_info", basic_info
+        assert conn.status == 204
+
+        conn = get build_conn, "api/users/#{user_id}/basic_info"
+        assert conn.status == 200
+        assert conn.resp_body == Poison.encode!(basic_info)
+    end
+
       test "should return with 400 when incorrect data is supplied" do
         conn = post build_conn, "api/users/rin/basic_info", %{name: "erin", age: "notknow", isMale: false}
         assert conn.status == 400
@@ -29,15 +41,14 @@ defmodule UserControllerTest do
         assert conn.status == 400
     end
 
-    test "should be able to get basic info with given id" do
+     test "should be able to get educational details for given user id" do
         user_id = Tak.Helper.random_key
-        basic_info = %{name: "erin", age: 33, gender: "female"}
-       conn = post build_conn, "api/users/#{user_id}/basic_info", basic_info
+        educational_details = %{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
+       conn = post build_conn, "api/users/#{user_id}/educational_details", educational_details
         assert conn.status == 204
 
-        conn = get build_conn, "api/users/#{user_id}/basic_info"
+        conn = get build_conn, "api/users/#{user_id}/educational_details"
         assert conn.status == 200
-        assert conn.resp_body == Poison.encode!(basic_info)
-
+        assert conn.resp_body == Poison.encode!(educational_details)
     end
 end
