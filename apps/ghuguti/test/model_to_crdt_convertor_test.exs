@@ -2,8 +2,9 @@ defmodule ModelToCrdtConvertorTest do
   use Ghuguti.Case
   import Map
   alias Convertor.ModelToCrdt
-  alias Riak.CRDT.Map
-  
+  alias Riak.CRDT.{Map, Register, Set, Counter, Flag}
+  @moduletag :model_to_crdt
+
   test "should be able to convert a model into crdt" do
      model = BasicMap.new
      model_map = from_struct(model)
@@ -26,11 +27,10 @@ defmodule ModelToCrdtConvertorTest do
  end
 
   test "should convert model with list to CRDT with Set" do
-    key = Ghuguti.Helper.random_key
+     key = Ghuguti.Helper.random_key
      model = BasicMapWithSet.new
 
-      ModelToCrdt.to_crdt(model)
-      |> Riak.update("maps", "bucketmap", key)
+      ModelToCrdt.to_crdt(model) |> Riak.update("maps", "bucketmap", key)
 
     map = Riak.find("maps", "bucketmap", key) |> Map.value
 
@@ -52,46 +52,6 @@ defmodule ModelToCrdtConvertorTest do
     assert "shopping" in set
     assert "watching movies" in set
  end
-
-  test "should update a register type" do
-     user_id = "saber"
-     given_that_user_already_exists(user_id)
-     key = "age"
-     updated_value = "20"
-     user = Riak.find("maps", "bucketmap", user_id) 
-
-    updated_map = ModelToCrdt.update(user, [age: updated_value])
-     
-     updated_map |> Riak.update("maps", "bucketmap",user_id)
-
-     map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    map_keys = :orddict.fetch_keys(map)
-
-    data = :orddict.to_list(map)
-    assert {{"age", :register}, to_string(updated_value)} in data
-  end
-
-  test "should update a Flag(boolean) type" do
-       user_id = "wrath"
-       user = BasicMap.new(user_id)
- 
-       user = %{ user | is_interested: true}
-      
-        user 
-        |> ModelToCrdt.to_crdt
-        |> Riak.update("maps", "bucketmap", user_id)
-
-     user = Riak.find("maps", "bucketmap", user_id) 
-
-    updated_map = ModelToCrdt.update(user, [is_interested: false])
-     updated_map |> Riak.update("maps", "bucketmap",user_id)
-
-     map = Riak.find("maps", "bucketmap", user_id) |> Map.value
-    map_keys = :orddict.fetch_keys(map)
-
-    data = :orddict.to_list(map)
-    assert {{"is_interested", :flag}, false} in data
-  end
 
   test "should convert model with nested struct to crdt with nested map" do
     model = MapWithNestedMap.new("mustang_1", BasicMap.new)
@@ -147,12 +107,12 @@ defmodule ModelToCrdtConvertorTest do
   test "should convert model with int to crdt with counter" do
     key = Ghuguti.Helper.random_key
      model = MapWithCounter.new
+    
      model 
      |> ModelToCrdt.to_crdt
      |> Riak.update("maps","bucketmap", key)
 
     map = Riak.find("maps", "bucketmap", key) |> Map.value
-    IO.inspect map
     map_keys = :orddict.fetch_keys(map)
     assert {"name", :register} in map_keys
     assert {"age", :counter} in map_keys
@@ -161,6 +121,90 @@ defmodule ModelToCrdtConvertorTest do
      assert :orddict.fetch({"name", :register}, map) == model.name
     assert :orddict.fetch({"age", :counter}, map) == 23
   end
+
+
+  test "should update register in existing crdt" do
+    key = Ghuguti.Helper.random_key
+
+    reg_data = "Register data"
+    reg = Register.new(reg_data)
+    reg_key = "reg_key"
+
+    flag = Flag.new |> Flag.enable
+    flag_key = "flag_key"
+
+    counter = Counter.new |> Counter.increment
+    counter_key = "counter_key"
+
+    Map.new|> Map.put(reg_key, reg)|> Map.put(flag_key, flag) |> Map.update(:counter, counter_key, fn _ -> counter end)|> Riak.update("maps", "bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key) 
+
+     Convertor.ModelToCrdt.update_crdt(map, [:reg_key, "new_reg_value"]) |> Riak.update("maps", "bucketmap", key)
+     user = Riak.find("maps", "bucketmap", key) |> Map.value
+     
+     assert :orddict.fetch({reg_key, :register}, user) == "new_reg_value"
+     assert :orddict.fetch({flag_key, :flag}, user) == true
+     assert :orddict.fetch({counter_key, :counter}, user) == 1
+end
+
+  test "should update flag in existing crdt" do
+    key = Ghuguti.Helper.random_key
+
+    reg_data = "Register data"
+    reg = Register.new(reg_data)
+    reg_key = "reg_key"
+
+    flag = Flag.new |> Flag.enable
+    flag_key = "flag_key"
+
+    counter = Counter.new |> Counter.increment
+    counter_key = "counter_key"
+
+    Map.new|> Map.put(reg_key, reg)|> Map.put(flag_key, flag) |> Map.update(:counter, counter_key, fn _ -> counter end)|> Riak.update("maps", "bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key) 
+
+     Convertor.ModelToCrdt.update_crdt(map, [:flag_key, false]) |> Riak.update("maps", "bucketmap", key)
+     user = Riak.find("maps", "bucketmap", key) |> Map.value
+     
+     assert :orddict.fetch({reg_key, :register}, user) == reg_data
+     assert :orddict.fetch({flag_key, :flag}, user) == false
+     assert :orddict.fetch({counter_key, :counter}, user) == 1
+end
+  
+
+test "should update crdt with Set" do
+     key = Ghuguti.Helper.random_key
+     model = BasicMapWithSet.new
+
+    ModelToCrdt.to_crdt(model) |> Riak.update("maps", "bucketmap", key)
+
+    updated_set = model.interests ++ ["watching anime"]
+    map = Riak.find("maps", "bucketmap", key)
+    ModelToCrdt.update_crdt(map, [:interests, updated_set]) |> Riak.update("maps", "bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
+
+    map_keys = :orddict.fetch_keys(map)
+
+    assert {"is_interested", :flag} in map_keys
+    assert {"name", :register} in map_keys
+    assert {"age", :counter} in map_keys
+    assert {"interests", :set} in map_keys
+    assert :orddict.size(map) == 4
+
+    data = :orddict.to_list(map)
+    assert {{"name", :register}, model.name} in data
+    assert {{"age", :counter}, model.age} in data
+    assert {{"is_interested", :flag}, false} in data
+    assert {{"is_interested", :flag}, false} in data
+
+    set = :orddict.fetch({"interests", :set}, map)
+    assert "shopping" in set
+    assert "watching movies" in set
+    assert "watching anime" in set
+ end
 
 
 defp given_that_user_already_exists(user_id) do
@@ -223,4 +267,17 @@ defmodule DoublyMapWithNestedMap do
   end
 end
 
+defmodule ModelWithList do
+  defstruct id: nil, notifications: []
+
+  def new do
+    id = "rin_osaka"
+    notifications = [Notification.new, Notification.new]
+  end
+end
+
+defmodule Notification do
+   defstruct id: "some_random_shit", category_type: "invitations", category_fields: %{sender: "some random guy", content: "I don't freaking care'"}
+
+end
 

@@ -1,6 +1,23 @@
-defmodule Tak.BasicInfo do
-    defstruct name: nil, age: nil, gender: nil
-    def new(basic_info) do
-        %Tak.BasicInfo{name: basic_info.name, age: basic_info.age, gender: basic_info.gender}
-    end
+defmodule Tak.User.BasicInfo do
+use Ecto.Schema
+import Ecto.Changeset
+@derive {Poison.Encoder, only: [:name, :age, :gender]}
+
+  schema "basic_info" do
+    field :name, :string
+    field :age, :integer
+    field :gender, :string
+    # field :contact_number, :integer
+    # field :date_of_birth, :integer
+    # field :current_city, :string
+    # field :hometown, :string
+    # belongs_to :user, Tak.User
+  end
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, [:name, :age, :gender])#:contact_number, :date_of_birth, :current_city, :hometown, :user_id])
+    |> validate_required([:name, :age])
+  end
+
 end

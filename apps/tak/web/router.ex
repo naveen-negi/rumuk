@@ -18,6 +18,10 @@ defmodule Tak.Router do
 
     get "/:user_id/notifications", NotificationController, :get
     post "/:user_id/notifications", NotificationController, :create
+    post "/:user_id/basic_info", UserController, :create_basic_info
+    get "/:user_id/basic_info", UserController, :get_basic_info
+    post "/:user_id/educational_details", UserController, :create_educational_details
+    get "/:user_id/educational_details", UserController, :get_educational_details
   end
 
   # Other scopes may use custom stacks.

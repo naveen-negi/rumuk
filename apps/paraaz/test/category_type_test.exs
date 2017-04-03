@@ -1,5 +1,5 @@
 defmodule CategoryTypeTest do
-    use Ghuguti.Case
+    use Paraaz.Case
     alias Paraaz.CategoryType
 
     test "should be able to create category type" do
