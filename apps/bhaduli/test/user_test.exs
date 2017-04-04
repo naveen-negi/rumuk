@@ -47,10 +47,10 @@ defmodule UserTest do
         Registry.start_link(:unique, :user_process_registry)
         id = Helper.random_key
         basic_info = %BasicInfo{name: "osaka", age: "28", gender: "female"}
-        {:ok, pid} = User.start_link(id)
+        {:ok, _} = User.start_link(id)
        
-        User.update(pid, basic_info)
-        basic_info = User.get_basic_info(pid)
+        User.update(id, basic_info)
+        basic_info = User.get_basic_info(id)
        
         assert basic_info.name == "osaka"
         # assert user_id != nil
@@ -63,7 +63,6 @@ defmodule UserTest do
         id = Helper.random_key
         educational_details_model = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
         {:ok, _} = User.start_link(id)
-         id = {:via, Registry, {:user_process_registry, String.to_atom(id)}}
         User.update(id, educational_details_model)
         educational_details = User.get_educational_details(id)
        
@@ -77,12 +76,10 @@ defmodule UserTest do
         id = Helper.random_key
         basic_info = %BasicInfo{name: "osaka", age: "28", gender: "female"}
         {:ok, _} = User.start_link(id)
-         id = {:via, Registry, {:user_process_registry, String.to_atom(id)}}
         User.update(id, basic_info)
         basic_info = User.get_basic_info(id)
        
         assert basic_info.name == "osaka"
-        # assert user_id != nil
         assert basic_info.age == "28"
         assert basic_info.gender == "female"
     end
@@ -93,7 +90,6 @@ defmodule UserTest do
         basic_info = %BasicInfo{name: "osaka", age: "28", gender: "female"}
         educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
         {:ok, _} = User.start_link(id)
-          id = {:via, Registry, {:user_process_registry, String.to_atom(id)}}
         User.update(id, basic_info)
         User.update(id, educational_details)
 

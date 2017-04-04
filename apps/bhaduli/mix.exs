@@ -18,7 +18,9 @@ defmodule Bhaduli.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :pooler, :riak]]
+    [applications: [:logger, :pooler, :riak],
+      mod: {Bhaduli, []}
+    ]
   end
 
   # Dependencies can be Hex packages:
