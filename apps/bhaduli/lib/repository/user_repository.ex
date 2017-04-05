@@ -11,6 +11,7 @@ defmodule Bhaduli.UserRepository do
     end
 
     def get(user_id) do
+        IO.inspect Riak.find(@bucket_type,@bucket_name,user_id)
         case Riak.find(@bucket_type,@bucket_name,user_id)  do
            nil  -> {:error, "user not found"}
             user -> user = user

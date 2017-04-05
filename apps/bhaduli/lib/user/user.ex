@@ -2,15 +2,15 @@ defmodule Bhaduli.User do
     use GenServer
     alias Bhaduli.User.{BasicInfo, EducationalDetails}
     @registry :user_process_registry
-
     defstruct [user_id: nil, basic_info: %Bhaduli.User.BasicInfo{}, educational_details: %Bhaduli.User.EducationalDetails{}]
 
     def start_link(name) do
-     GenServer.start_link(__MODULE__,name, name: via_tuple(name))
+     GenServer.start_link(__MODULE__, %Bhaduli.User{user_id: name}, name: via_tuple(name))
     end
 
-    def init(name) do
-        {:ok, %Bhaduli.User{user_id: name}}
+    def init(%Bhaduli.User{} = user) do
+        GenServer.cast(self(), {:populate_user})
+        {:ok, user}
     end
 
     def update(id, %BasicInfo{} = basic_info) do
@@ -48,6 +48,14 @@ defmodule Bhaduli.User do
         {:noreply, user}
     end
 
+    def handle_cast({:populate_user}, user) do
+        IO.inspect Bhaduli.UserRepository.get(user.user_id)
+        case Bhaduli.UserRepository.get(user.user_id) do
+           {:error, _} ->   {:noreply, user}
+            {:ok, user} ->   {:noreply, user}          
+        end
+    end
+
     def handle_call({:basic_info}, pid, state) do
           {:reply, state.basic_info, state}
     end
@@ -62,5 +70,10 @@ defmodule Bhaduli.User do
 
     def via_tuple(user_id) do
          {:via, Registry, {:user_process_registry, user_id}}
+    end
+
+    def from_tuple(tuple) do
+         {:via, Registry, {:user_process_registry, user_id}} = tuple
+         user_id
     end
 end

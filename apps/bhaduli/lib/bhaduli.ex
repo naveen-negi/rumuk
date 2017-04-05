@@ -7,7 +7,6 @@ defmodule Bhaduli do
         children = [
             supervisor(Registry, [:unique, :user_process_registry])
         ]
-
          opts = [strategy: :one_for_one, name: Bhaduli.Supervisor]
          Supervisor.start_link(children, opts)
     end
