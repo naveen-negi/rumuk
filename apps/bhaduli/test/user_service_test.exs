@@ -15,7 +15,7 @@ defmodule Bhaduli.UserServiceTest do
                     |> UserService.update(educational_details)
                     |> UserService.save
         
-        user = UserService.get(id)
+        {:ok, user} = UserService.get(id)
 
         assert user.user_id == id
         assert user.basic_info == basic_info

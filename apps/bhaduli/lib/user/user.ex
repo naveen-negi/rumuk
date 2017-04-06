@@ -37,7 +37,7 @@ defmodule Bhaduli.User do
         case Registry.lookup(@registry, id) do
             [{pid, _}] -> Registry.lookup(@registry, id)
                           GenServer.call(pid, {}) 
-            []      -> nil
+            []      -> {:error, :not_found}
         end
        
     end
@@ -53,9 +53,6 @@ defmodule Bhaduli.User do
     end
 
     def handle_cast({:populate_user}, user) do
-        IO.puts "something weired going on "
-        IO.puts user.user_id
-        IO.inspect Bhaduli.UserRepository.get(user.user_id)
         case Bhaduli.UserRepository.get(user.user_id) do
            {:error, _} ->   {:noreply, user}
             {:ok, user} ->   {:noreply, user}          

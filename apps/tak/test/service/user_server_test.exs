@@ -14,10 +14,10 @@ defmodule UserServiceTest do
                             user =    User.new(id)
                                         |> User.update(basic_info) 
                                         |> User.update(educational_details)
+                                        |> UserServer.save
 
-     assert {:noreply, []} ==  UserServer.handle_cast({:save, user}, %{})
 
-      {:reply, user, _} = UserServer.handle_call({:lookup, id}, self(), %{})
+      user = UserServer.lookup(id)
       assert user.basic_info == basic_info
       assert user.educational_details == educational_details
       assert user.id == id

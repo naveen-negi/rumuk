@@ -5,7 +5,7 @@ defmodule Bhaduli.UserService do
     alias Bhaduli.User.{BasicInfo, EducationalDetails}
     
     def create(id) do
-        Bhaduli.UserSupervisor.start_user(id)
+        UserSupervisor.start_user(id)
         User.get(id)
     end 
 
@@ -25,6 +25,10 @@ defmodule Bhaduli.UserService do
     end
 
     def get(id) do
-        User.get(id)
+        case UserRepository.get(id) do
+            {:error, _} -> {:error, :not_found}
+            {:ok, user} ->  UserSupervisor.start_user(id)
+                            {:ok, user}
+        end
     end
 end

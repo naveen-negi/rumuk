@@ -5,7 +5,8 @@ defmodule Bhaduli do
         import Supervisor.Spec, warn: false
 
         children = [
-            supervisor(Registry, [:unique, :user_process_registry])
+            supervisor(Registry, [:unique, :user_process_registry]),
+            supervisor(Bhaduli.UserSupervisor, [])
         ]
          opts = [strategy: :one_for_one, name: Bhaduli.Supervisor]
          Supervisor.start_link(children, opts)

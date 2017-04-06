@@ -11,7 +11,7 @@ defmodule Tak do
       # Start the endpoint when the application starts
       supervisor(Tak.Endpoint, []),
       worker(Tak.NotificationServer, [Tak.NotificationServer]),
-      worker(Tak.UserServer, [Tak.UserServer])
+      # worker(Tak.UserServer, [Tak.UserServer])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
