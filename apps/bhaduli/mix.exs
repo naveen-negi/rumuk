@@ -18,7 +18,7 @@ defmodule Bhaduli.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :pooler, :riak],
+    [applications: [],
       mod: {Bhaduli, []}
     ]
   end
@@ -38,11 +38,11 @@ defmodule Bhaduli.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:pooler, "~> 1.5"},
-     { :uuid, "~> 1.1" },
-     {:riak, "~> 1.0"},
-      {:paraaz, in_umbrella: true},
-      {:ghuguti, in_umbrella: true}
+      # {:pooler, "~> 1.5"},
+    #  { :uuid, "~> 1.1" },
+    #  {:riak, "~> 1.0"},
+      # {:paraaz, in_umbrella: true},
+      # {:ghuguti, in_umbrella: true}
     ]
   end
 end

@@ -9,12 +9,18 @@ defmodule Tak.UserServer do
         GenServer.start_link(__MODULE__, :ok, name: name)
     end
 
-    def save(%Tak.User{} = user) do
+    def save( %Tak.User{} = user, :basic_info) do
         basic_info = struct(Bhaduli.User.BasicInfo, from_ecto(user.basic_info))
-        educational_details = struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
                               
                     UserService.create(user.id)
                     |> UserService.update(basic_info)
+                    |> UserService.save
+    end
+
+    def save(%Tak.User{} = user, :educational_details) do
+        educational_details = struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
+                              
+                    UserService.create(user.id)
                     |> UserService.update(educational_details)
                     |> UserService.save
     end

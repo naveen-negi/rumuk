@@ -14,11 +14,12 @@ config :pooler, pools:
     [
       name: :riaklocal1,
       group: :riak,
-      max_count: 20,
-      init_count: 10,
+      max_count: 1000,
+      init_count: 200,
       start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
     ]
   ]
+
 # Sample configuration (overrides the imported configuration above):
 #
 #     config :logger, :console,

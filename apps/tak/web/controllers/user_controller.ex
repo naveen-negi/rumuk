@@ -11,7 +11,7 @@ defmodule Tak.UserController do
         case changeset.valid? do
             true -> User.new(user_id) 
                     |> User.update(struct(BasicInfo, changeset.changes))
-                    |> Tak.UserServer.save
+                    |> Tak.UserServer.save(:basic_info)
 
                      send_resp(conn, 204,"")
 
@@ -45,7 +45,7 @@ defmodule Tak.UserController do
         case changeset.valid? do
             true -> User.new(user_id) 
                     |> User.update(struct(EducationalDetails, changeset.changes))
-                    |> Tak.UserServer.save
+                    |> Tak.UserServer.save(:educational_details)
                      
                      send_resp(conn, 204,"")
 
