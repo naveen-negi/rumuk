@@ -1,5 +1,5 @@
 defmodule NotificationMapperTest do
-    use ExUnit.Case
+    use Paraaz.Case
     alias Paraaz.Notification
     alias Riak.CRDT.Map
     alias Riak.CRDT.Register

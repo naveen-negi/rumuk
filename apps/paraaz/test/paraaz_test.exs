@@ -1,5 +1,5 @@
 defmodule ParaazTest do
-  use ExUnit.Case
+  use Paraaz.Case
   doctest Paraaz
 
   test "the truth" do

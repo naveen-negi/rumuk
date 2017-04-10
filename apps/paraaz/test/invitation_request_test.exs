@@ -1,5 +1,5 @@
 defmodule InvitationRequestTest do
-    use ExUnit.Case
+    use Paraaz.Case
     alias Paraaz.CategoryType.InvitationRequest
 
     test "should get invitation request Category Type" do

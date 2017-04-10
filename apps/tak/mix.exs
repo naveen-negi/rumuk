@@ -8,7 +8,7 @@ defmodule Tak.Mixfile do
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
      lockfile: "../../mix.lock",
-     elixir: "~> 1.2",
+     elixir: "~> 1.4",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -21,7 +21,7 @@ defmodule Tak.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Tak, []},
-     applications: [:pooler, :phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext],
+     applications: [:pooler,:riak,:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext],
     included_applications: [ :pooler ]]
   end
 
@@ -40,8 +40,10 @@ defmodule Tak.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:poison, "~> 2.0"},
-     {:pooler, "~> 1.5"},
-     {:paraaz, in_umbrella: true}
+     {:phoenix_ecto, "~> 3.0"},
+     { :uuid, "~> 1.1" },
+     {:paraaz, in_umbrella: true},
+     {:ghuguti, in_umbrella: true}
     ]
   end
 end

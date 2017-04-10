@@ -9,14 +9,14 @@ config :tak, Tak.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-config :pooler, pools:
-  [
-    [
-      name: :riaklocal1,
-      group: :riak,
-      max_count: 20,
-      init_count: 10,
-      start_mfa: { Riak.Connection, :start_link, [] }
-    ]
-  ]
+# config :pooler, pools:
+#   [
+#     [
+#       name: :riaklocal1,
+#       group: :riak,
+#       max_count: 20,
+#       init_count: 10,
+#       start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
+#     ]
+#   ]
 
