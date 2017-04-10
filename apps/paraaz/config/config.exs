@@ -20,16 +20,16 @@ use Mix.Config
 #
 #     config :logger, level: :info
 #
-config :pooler, pools:
-  [
-    [
-      name: :riaklocal1,
-      group: :riak,
-      max_count: 20,
-      init_count: 10,
-      start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
-    ]
-  ]
+# config :pooler, pools:
+#   [
+#     [
+#       name: :riaklocal1,
+#       group: :riak,
+#       max_count: 1,
+#       init_count: 1,
+#       start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
+#     ]
+#   ]
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment

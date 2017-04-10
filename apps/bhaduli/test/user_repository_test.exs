@@ -10,13 +10,12 @@ defmodule UserRepositoryTest do
        basic_info = %BasicInfo{name: "osaka", age: 28, gender: "female"}
        educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
                        
-                         response =    User.new(id)
-                                        |> User.update(basic_info) 
-                                        |> User.update(educational_details)
-                                        |> UserRepository.save
-                        
-        assert response == :ok
+        {:ok, _} = User.start_link(id)
+        User.update(id, basic_info)
+        User.update(id, educational_details)
+        User.get(id) |>  UserRepository.save
         {:ok, user} = UserRepository.get(id)
+       
         assert user.user_id == id  
         assert user.basic_info == basic_info
         assert user.educational_details == educational_details
@@ -27,12 +26,13 @@ defmodule UserRepositoryTest do
        basic_info = %BasicInfo{name: "osaka", age: 28, gender: "female"}
        educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
                        
-                            User.new(id)
-                              |> User.update(basic_info) 
-                              |> User.update(educational_details)
-                              |> UserRepository.save
+        {:ok, _} = User.start_link(id)
+        User.update(id, basic_info)
+        User.update(id, educational_details)
+        User.get(id) |>  UserRepository.save
                         
         params = %{name: "guilty", age: 33, gender: "female"}
+
         UserRepository.update(:basic_info, id, params);
 
         {:ok, updated_user} = UserRepository.get(id)
@@ -46,10 +46,10 @@ defmodule UserRepositoryTest do
        basic_info = %BasicInfo{name: "osaka", age: 28, gender: "female"}
        educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
                        
-                            User.new(id)
-                              |> User.update(basic_info) 
-                              |> User.update(educational_details)
-                              |> UserRepository.save
+        {:ok, _} = User.start_link(id)
+        User.update(id, basic_info)
+        User.update(id, educational_details)
+        User.get(id) |>  UserRepository.save
                         
         params = %{name: "guilty"}
         UserRepository.update(:basic_info, id, params);
@@ -64,9 +64,9 @@ defmodule UserRepositoryTest do
        id = Helper.random_key
        educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
                        
-                            User.new(id)
-                              |> User.update(educational_details)
-                              |> UserRepository.save
+         {:ok, _} = User.start_link(id)
+        User.update(id, educational_details)
+        User.get(id) |>  UserRepository.save
                         
         params = %{senior_secondary: "Doon International school"}
         UserRepository.update(:educational_details, id, params);

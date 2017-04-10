@@ -44,7 +44,7 @@ defmodule UserControllerTest do
      test "should be able to get educational details for given user id" do
         user_id = Tak.Helper.random_key
         educational_details = %{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
-       conn = post build_conn, "api/users/#{user_id}/educational_details", educational_details
+        conn = post build_conn, "api/users/#{user_id}/educational_details", educational_details
         assert conn.status == 204
 
         conn = get build_conn, "api/users/#{user_id}/educational_details"
