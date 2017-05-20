@@ -7,9 +7,11 @@ defmodule Tak.UserController do
     def create_basic_info(conn, params) do
         user_id = conn.params["user_id"]
         changeset = BasicInfo.changeset(%BasicInfo{}, params)
-      
+
         case changeset.valid? do
-            true -> User.new(user_id) 
+          true ->
+                    user_id
+                    |> User.new
                     |> User.update(struct(BasicInfo, changeset.changes))
                     |> Tak.UserServer.save(:basic_info)
 

@@ -11,7 +11,6 @@ defmodule Tak.UserServer do
 
     def save( %Tak.User{} = user, :basic_info) do
         basic_info = struct(Bhaduli.User.BasicInfo, from_ecto(user.basic_info))
-                              
                     UserService.create(user.id)
                     |> UserService.update(basic_info)
                     |> UserService.save
@@ -19,11 +18,11 @@ defmodule Tak.UserServer do
 
     def save(%Tak.User{} = user, :educational_details) do
         educational_details = struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
-                              
                     UserService.create(user.id)
                     |> UserService.update(educational_details)
                     |> UserService.save
     end
+
 
     def lookup(user_id) do
         case Bhaduli.UserService.get(user_id) do
