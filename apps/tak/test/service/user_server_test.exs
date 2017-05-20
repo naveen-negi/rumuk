@@ -16,7 +16,7 @@ defmodule UserServiceTest do
                                         |> User.update(educational_details)
                                         |> UserServer.save
 
-
+ 
       user = UserServer.lookup(id)
       assert user.basic_info == basic_info
       assert user.educational_details == educational_details

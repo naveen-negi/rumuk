@@ -2,7 +2,7 @@ defmodule UserControllerTest do
      use Tak.ConnCase
      alias Tak.User
      alias Tak.User.{BasicInfo, EducationalDetails}
-    @moduletag :user     
+    @moduletag :user
 
       test "should be able to create user with basic info" do
         key = Tak.Helper.random_key
