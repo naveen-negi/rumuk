@@ -6,7 +6,7 @@ defmodule Tak.UserServer do
     import Map
 
     def start_link(name) do
-        GenServer.start_link(__MODULE__, :ok, name: name)
+      GenServer.start_link(__MODULE__, :ok, name: name)
     end
 
     def save( %Tak.User{} = user, :basic_info) do

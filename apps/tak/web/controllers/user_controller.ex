@@ -26,7 +26,7 @@ defmodule Tak.UserController do
 
     def get_basic_info(conn, params) do
         user_id = conn.params["user_id"]
-             user = Tak.UserServer.lookup(user_id)
+             user = Tak.UserServer.lookup(user_id) 
                       conn
                       |> put_resp_content_type("application/json")
                       |> send_resp(200, Poison.encode!(user.basic_info))

@@ -1,4 +1,4 @@
-defmodule UserRepositoryTest do
+defmodule Bhaduli.UserRepositoryTest do
     use Bhaduli.Case
     alias Bhaduli.User
     alias Bhaduli.User.{EducationalDetails, BasicInfo}
