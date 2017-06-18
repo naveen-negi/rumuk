@@ -13,7 +13,6 @@ defmodule UserSearchTest do
         User.update(id, basic_info)
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
-        query = [gender: "female"]
 
         id = Helper.random_key
         basic_info = %BasicInfo{name: "erin", age: 28, gender: "female"}
@@ -23,11 +22,9 @@ defmodule UserSearchTest do
         User.update(id, basic_info)
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
-        query = [gender: "female"]
- 
-        gender = "female"
+        query = %{gender: "female"}
         :timer.sleep(2000)
-       result = UserRepository.search(gender, query)
+       result = UserRepository.search(query)
        IO.inspect result
 
        {:ok, {:search_results,users,rank, count}}  = result
@@ -44,7 +41,6 @@ defmodule UserSearchTest do
         User.update(id, basic_info)
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
-        query = [gender: "female"]
 
         id = Helper.random_key
         basic_info = %BasicInfo{name: "erin", age: 28, gender: "female"}
@@ -55,12 +51,10 @@ defmodule UserSearchTest do
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
 
-        query = %{min_age: 20, max_age: 50}
+        query = %{gender: "female", min_age: 20, max_age: 50}
 
-        gender = "female"
         :timer.sleep(2000)
-       result = UserRepository.search(gender, query)
-       IO.inspect result
+       result = UserRepository.search(query)
 
        {:ok, {:search_results,users,rank, count}}  = result
 

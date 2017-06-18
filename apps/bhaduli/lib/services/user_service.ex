@@ -3,6 +3,7 @@ defmodule Bhaduli.UserService do
     alias Bhaduli.User
     alias Bhaduli.UserSupervisor
     alias Bhaduli.User.{BasicInfo, EducationalDetails}
+    alias Bhaduli.Parser
     
     def create(id) do
         case User.get(id) do
@@ -32,6 +33,11 @@ defmodule Bhaduli.UserService do
             {:error, :not_found} -> get_user_from_db(id)
             user -> {:ok, user}
         end
+    end
+
+    def search(query) do
+      search_results = UserRepository.search(query)
+      Parser.parse(search_results)
     end
 
     defp get_user_from_db(id) do

@@ -26,6 +26,9 @@ defmodule Bhaduli.Parser do
     Enum.reduce(list, %User{}, fn (detail, user) -> process(detail, user) end)
   end
 
+  defp process({"user_id_register", id}, user) do
+    %User{user | user_id: id}
+  end
   defp process({"basic_info_map.age_counter", age}, user)  do
     basic_info = %BasicInfo{user.basic_info | age: String.to_integer(age)}
     %User{user | basic_info: basic_info}
@@ -35,7 +38,7 @@ defmodule Bhaduli.Parser do
     basic_info = %BasicInfo{user.basic_info | name: name}
     %User{user | basic_info: basic_info}
   end
-  
+
   defp process({"basic_info_map.gender_register", gender}, user)  do
     basic_info = %BasicInfo{user.basic_info | gender: gender}
     %User{user | basic_info: basic_info}
