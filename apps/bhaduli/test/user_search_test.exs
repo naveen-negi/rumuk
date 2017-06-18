@@ -23,8 +23,6 @@ defmodule UserSearchTest do
         User.update(id, basic_info)
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
-
-
         query = [gender: "female"]
  
         gender = "female"
@@ -70,7 +68,6 @@ defmodule UserSearchTest do
 
           {:ok, users} = Riak.Bucket.keys("maps", "users") 
            Enum.each(users, fn key -> Riak.delete("maps", "users", key) end)
-
     end
 
 
