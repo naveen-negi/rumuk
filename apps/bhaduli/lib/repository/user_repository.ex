@@ -46,10 +46,12 @@ defmodule Bhaduli.UserRepository do
     end
 
     def search(query) do
-       defaults = %{min_age: 0, max_age: 100, gender: "*"}
-        params = Map.merge(defaults, query)
-        riak_query = "basic_info_map.gender_register:#{params[:gender]} AND basic_info_map.age_counter:[#{params[:min_age]} TO #{params[:max_age]}]"
-        IO.inspect riak_query
-     Riak.Search.query("users",  riak_query)
+      defaults = %{min_age: 0, max_age: 100, gender: "*"}
+      params = Map.merge(defaults, query)
+      riak_query = "basic_info_map.gender_register:#{params[:gender]} AND basic_info_map.age_counter:[#{params[:min_age]} TO #{params[:max_age]}]"
+      IO.inspect riak_query
+      results = Riak.Search.query("users",  riak_query)
+      IO.inspect results
+      results
     end
 end
