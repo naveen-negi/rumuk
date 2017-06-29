@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :bhaduli, key: :value
+#     config :kafal, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:bhaduli, :key)
+#     Application.get_env(:kafal, :key)
 #
 # Or configure a 3rd-party app:
 #
@@ -28,15 +28,3 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
-
-config :pooler, pools:
-[
-  [
-    name: :riaklocal1,
-    group: :riak,
-    max_count: 20,
-    init_count: 10,
-    start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
-  ]
-]
-

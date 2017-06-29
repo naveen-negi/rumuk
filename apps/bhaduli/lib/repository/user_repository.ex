@@ -29,7 +29,6 @@ defmodule Bhaduli.UserRepository do
 
         info  = Enum.reduce(params, user.basic_info,
                  fn {key, value}, acc -> Map.put(acc, key, value) end)
-      
        Map.put(user, :basic_info, info)
        |> Ghuguti.to_crdt
        |>  Riak.update(@bucket_type, @bucket_name, user.user_id)
@@ -39,12 +38,20 @@ defmodule Bhaduli.UserRepository do
         user = Riak.find(@bucket_type, @bucket_name, id) 
                     |> M.value 
                     |> Ghuguti.to_model(User)
-        
         info  = Enum.reduce(params, user.educational_details,
                  fn {key, value}, acc -> Map.put(acc, key, value) end)
-      
        Map.put(user, :educational_details, info)
        |> Ghuguti.to_crdt
        |>  Riak.update(@bucket_type, @bucket_name, user.user_id)
+    end
+
+    def search(query) do
+      defaults = %{min_age: 0, max_age: 100, gender: "*"}
+      params = Map.merge(defaults, query)
+      riak_query = "basic_info_map.gender_register:#{params[:gender]} AND basic_info_map.age_counter:[#{params[:min_age]} TO #{params[:max_age]}]"
+      IO.inspect riak_query
+      results = Riak.Search.query("users",  riak_query)
+      IO.inspect results
+      results
     end
 end

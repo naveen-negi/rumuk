@@ -2,7 +2,7 @@ defmodule UserControllerTest do
      use Tak.ConnCase
      alias Tak.User
      alias Tak.User.{BasicInfo, EducationalDetails}
-    @moduletag :user     
+    @moduletag :user
 
       test "should be able to create user with basic info" do
         key = Tak.Helper.random_key
@@ -51,4 +51,17 @@ defmodule UserControllerTest do
         assert conn.status == 200
         assert conn.resp_body == Poison.encode!(educational_details)
     end
+
+     test "should be able to search user using gender and age" do
+       user_id = "abra ka dabra"#Tak.Helper.random_key
+       basic_info = %{name: "erin", age: 33, gender: "female"}
+       conn = post build_conn, "api/users/#{user_id}/basic_info", basic_info
+       conn = get build_conn, "api/users/#{user_id}/basic_info"
+       assert conn.status == 200
+       :timer.sleep(2000)
+       gender = "female"
+       conn = get build_conn, "api/users/#{user_id}/search?min_age=20&max_age=500&gender=#{gender}"
+       IO.inspect conn.resp_body 
+       assert conn.status == 200
+     end
 end

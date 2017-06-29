@@ -5,9 +5,9 @@ defmodule UserTest do
     alias Bhaduli.Helper
     @moduletag :user_gensever
 
-    def setup_all do
-        Registry.start_link(:unique, :user_process_registry)
-    end
+#    def setup_all do
+#        Registry.start_link(:unique, :user_process_registry)
+#    end
     # test "should populate not nil id in user while creating a new one" do
     #     id = Helper.random_key
     #     user = User.new(id)
@@ -26,7 +26,7 @@ defmodule UserTest do
     # end
 
     # test "user should populate educational details" do
-    #     id = Helper.random_key
+    #     id = H#elper.random_key
     #     educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
     #     user =  User.new(id) |> User.update(educational_details)
         
