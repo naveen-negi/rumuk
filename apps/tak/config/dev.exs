@@ -14,6 +14,9 @@ config :tak, Tak.Endpoint,
   check_origin: false,
   watchers: []
 
+config :tak,
+  bucket_type: "maps",
+  bucket_name: "users"
 
 # Watch static and templates for browser reloading.
 config :tak, Tak.Endpoint,

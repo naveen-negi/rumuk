@@ -6,6 +6,11 @@ config :tak, Tak.Endpoint,
   http: [port: 4001],
   server: false
 
+
+config :tak,
+  bucket_type: "maps",
+  bucket_name: "tak_users"
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

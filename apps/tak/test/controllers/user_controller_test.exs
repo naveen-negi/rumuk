@@ -54,7 +54,7 @@ defmodule UserControllerTest do
 
      test "should be able to search user using gender and age" do
        user_id = "abra ka dabra"#Tak.Helper.random_key
-       basic_info = %{name: "erin", age: 33, gender: "female"}
+       basic_info = %{name: "erin", age: "33", gender: "female"}
        conn = post build_conn, "api/users/#{user_id}/basic_info", basic_info
        conn = get build_conn, "api/users/#{user_id}/basic_info"
        assert conn.status == 200

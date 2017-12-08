@@ -6,8 +6,8 @@ defmodule Bhaduli.Case do
   setup_all do
     on_exit fn ->
       #Riak.Helper.clean! pid
-      {:ok, users} = Riak.Bucket.keys("maps", "users") 
-       Enum.each(users, fn key -> Riak.delete("maps", "users", key) end)
+      {:ok, users} = Riak.Bucket.keys("maps", "test-users") 
+       Enum.each(users, fn key -> Riak.delete("maps", "test-users", key) end)
     end
     end
 end

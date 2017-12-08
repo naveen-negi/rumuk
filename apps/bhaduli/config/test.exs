@@ -2,9 +2,9 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :tak, Tak.Endpoint,
-  http: [port: 4001],
-  server: false
+config :bhaduli,
+bucket_type: "maps",
+bucket_name: "bhaduli-users"
 
 # Print only warnings and errors during test
 config :logger, level: :warn

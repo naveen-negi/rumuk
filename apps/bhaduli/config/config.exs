@@ -40,3 +40,4 @@ config :pooler, pools:
   ]
 ]
 
+import_config "#{Mix.env}.exs"

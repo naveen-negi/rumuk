@@ -5,8 +5,8 @@ defmodule UserSearchTest do
     alias Bhaduli.{Helper, UserRepository}
 
     test "should be able to search user based on gender" do
-       id = Helper.random_key
-       basic_info = %BasicInfo{name: "osaka", age: 28, gender: "female"}
+       id = "user-1"
+       basic_info = %BasicInfo{name: "test_user_1", age: 28, gender: "female"}
        educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
 
         {:ok, _} = User.start_link(id)
@@ -14,8 +14,9 @@ defmodule UserSearchTest do
         User.update(id, educational_details)
         User.get(id) |>  UserRepository.save
 
-        id = Helper.random_key
-        basic_info = %BasicInfo{name: "erin", age: 28, gender: "female"}
+        id = "user-2"
+        IO.puts id
+        basic_info = %BasicInfo{name: "test_user_2", age: 28, gender: "female"}
         educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
 
         {:ok, _} = User.start_link(id)
