@@ -3,8 +3,8 @@ use Mix.Config
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :bhaduli,
-bucket_type: "maps",
-bucket_name: "bhaduli-users"
+bucket_type: "test-users",
+bucket_name: "test-users"
 
 # Print only warnings and errors during test
 config :logger, level: :warn

@@ -4,6 +4,8 @@ defmodule NotificationServiceTest do
     alias Paraaz.Notification
     alias Paraaz.CategoryType.InvitationRequest
 
+    @moduletag :notifications_service
+
     defp clean_up(user_id) do
          Riak.delete("maps", "users", user_id)
     end
@@ -14,7 +16,6 @@ defmodule NotificationServiceTest do
         category_type = InvitationRequest.type.value
         category_fields = %{sender_id: "rin"}
         ok_response = Paraaz.NotificationService.save(user_id , category_type, category_fields)
-       
         assert ok_response == :ok
         clean_up(user_id)
     end

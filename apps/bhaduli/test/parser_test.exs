@@ -35,7 +35,7 @@ defmodule Bhaduli.ParserTest do
      {:search_results,
       [{"users",
         [{"score", "1.00000000000000000000e+00"}, {"_yz_rb", "users"},
-         {"_yz_rt", "maps"}, {"_yz_rk", "1497702582526562"},
+         {"_yz_rt", "map"}, {"_yz_rk", "1497702582526562"},
          {"_yz_id", "1*maps*users*1497702582526562*31"},
          {"basic_info_map.age_counter", "28"},
          {"basic_info_map.gender_register", "female"},

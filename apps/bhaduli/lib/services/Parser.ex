@@ -16,7 +16,7 @@ defmodule Bhaduli.Parser do
 
   def  parse_user_details(users, list) do
     [h | t] = users
-    {"users", details_list} = h
+    {_, details_list} = h
     user = get_user_details(details_list)
     list =  [user] ++ list
     parse_user_details(t, list)

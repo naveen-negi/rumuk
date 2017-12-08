@@ -24,12 +24,10 @@ defmodule Bhaduli.UserRepositoryTest do
     id = Helper.random_key
     basic_info = %BasicInfo{name: "osaka", age: 28, gender: "female"}
     educational_details = %EducationalDetails{graduation: "G.B Pant", senior_secondary: "DIS", intermediate: "DIS"}
-    
     {:ok, _} = User.start_link(id)
     User.update(id, basic_info)
     User.update(id, educational_details)
     User.get(id) |>  UserRepository.save
-    
     params = %{name: "guilty", age: 33, gender: "female"}
 
     UserRepository.update(:basic_info, id, params);
@@ -37,7 +35,6 @@ defmodule Bhaduli.UserRepositoryTest do
     {:ok, updated_user} = UserRepository.get(id)
     assert updated_user.basic_info.name == "guilty"
     assert updated_user.basic_info.age == 33
-    
   end
 
   test "should be able to update basic info for a user" do

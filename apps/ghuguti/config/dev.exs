@@ -1,9 +1,11 @@
 # This file is responsible for configuring your application
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
-config :paraaz,
-  bucket_type: "notification-users",
-  bucket_name: "notification-users"
+
+config :bhaduli,
+  bucket_type: "test-users",
+  bucket_name: "test-users"
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
@@ -12,11 +14,11 @@ config :paraaz,
 
 # You can configure for your application as:
 #
-#     config :paraaz, key: :value
+#     config :ghuguti, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:paraaz, :key)
+#     Application.get_env(:ghuguti, :key)
 #
 # Or configure a 3rd-party app:
 #
@@ -29,3 +31,4 @@ config :paraaz,
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
+#     import_config "#{Mix.env}.exs"

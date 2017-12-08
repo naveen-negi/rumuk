@@ -6,18 +6,18 @@ defmodule Tak.Case do
   setup_all do
     on_exit fn ->
       
-      {:ok, users} = Riak.Bucket.keys("maps", "test-users") 
-       Enum.each(users, fn key -> Riak.delete("maps", "test-users", key) end)
-       Enum.each(users, fn key -> Riak.find("maps", "test-users", key) end)
+      {:ok, users} = Riak.Bucket.keys("test-users", "test-users") 
+       Enum.each(users, fn key -> Riak.delete("test-users", "test-users", key) end)
+       Enum.each(users, fn key -> Riak.find("test-users", "test-users", key) end)
       
-       Enum.each(users, fn key -> Riak.delete("maps", "test-notification_users", key) end)
-       Enum.each(users, fn key -> Riak.delete("maps", "test-notification_users", key) end)
-       Enum.each(users, fn key -> Riak.delete("maps", "test-notification_users", key) end)
-       Enum.each(users, fn key -> Riak.find("maps", "test-notification_users", key) end)
+       Enum.each(users, fn key -> Riak.delete("test-notification_users", "test-notification_users", key) end)
+       Enum.each(users, fn key -> Riak.delete("test-notification-users", "test-notification-users", key) end)
+       Enum.each(users, fn key -> Riak.delete("test-notification-users", "test-notification-users", key) end)
+       Enum.each(users, fn key -> Riak.find("test-notification-users", "test-notification-users", key) end)
       
-      {:ok, notifications} = Riak.Bucket.keys("maps", "test-notifications") 
-      Enum.each(notifications, fn key -> Riak.delete("maps", "test-notifications", key) end)
-      Enum.each(notifications, fn key -> Riak.find("maps", "test-notifications", key) end)
+      {:ok, notifications} = Riak.Bucket.keys("test-notifications", "test-notifications") 
+      Enum.each(notifications, fn key -> Riak.delete("test-notifications", "test-notifications", key) end)
+      Enum.each(notifications, fn key -> Riak.find("test-notifications", "test-notifications", key) end)
      end
     end
 end
