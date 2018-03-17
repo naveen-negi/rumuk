@@ -1,8 +1,7 @@
 defmodule Tak.User do
      alias Tak.User.{BasicInfo, EducationalDetails}
     defstruct  id: nil, basic_info: %Tak.User.BasicInfo{}, educational_details: %Tak.User.EducationalDetails{}
-    
-    
+
     def new(id) do
         %Tak.User{id: id}
     end

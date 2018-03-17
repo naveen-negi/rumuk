@@ -62,11 +62,9 @@ defmodule Tak.UserController do
     max_age = params["max_age"]
 
     results = Tak.UserServer.search(%{gender: gender, min_age: min_age, max_age: max_age})
-    IO.puts "results are show below ......."
-IO.inspect results
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Poison.encode!(results))
-
   end
+
 end

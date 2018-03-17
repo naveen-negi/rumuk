@@ -1,5 +1,6 @@
 defmodule UserControllerTest do
      use Tak.ConnCase
+     require Plug
      alias Tak.User
      alias Tak.User.{BasicInfo, EducationalDetails}
     @moduletag :user
@@ -9,7 +10,6 @@ defmodule UserControllerTest do
         conn = post build_conn, "api/users/rin/basic_info", %{name: "erin", age: 33, isMale: false}
         assert conn.status == 204
     end
-
 
     test "should be able to get basic info with given id" do
         user_id = Tak.Helper.random_key
@@ -61,7 +61,13 @@ defmodule UserControllerTest do
        :timer.sleep(2000)
        gender = "female"
        conn = get build_conn, "api/users/#{user_id}/search?min_age=20&max_age=500&gender=#{gender}"
-       IO.inspect conn.resp_body 
+       assert conn.status == 200
+     end
+
+     test "should be able to save image for given user" do
+       user_id = Tak.Helper.random_key
+       upload = %Plug.Upload(path: "test/fixtures/image.jpg", filename: "image.jpg")
+       conn = conn() |> post("api/users/#{user_id}/images", %{:image => upload})
        assert conn.status == 200
      end
 end

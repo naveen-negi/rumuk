@@ -6,7 +6,7 @@ defmodule Tak.NotificationServer do
         GenServer.start_link(__MODULE__, :ok, name: name)
     end
     def save(pid, user) do
-        Enum.each(user.notifications, fn x -> 
+        Enum.each(user.notifications, fn x ->
              GenServer.cast(pid, {:save, user})
              end)
     end
