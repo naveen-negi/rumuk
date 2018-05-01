@@ -19,7 +19,7 @@ defmodule Kafal.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    [extra_applications: [:riak, :logger, :ghuguti]]
   end
 
   # Dependencies can be Hex packages:
@@ -36,8 +36,9 @@ defmodule Kafal.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [ {:credo, "~> 0.5", only: [:dev, :test]},
+    [{:credo, "~> 0.5", only: [:dev, :test]},
       {:riak, "~> 1.0"},
+     {:briefly, "~> 0.3", only: [:test]}
 ]
   end
 

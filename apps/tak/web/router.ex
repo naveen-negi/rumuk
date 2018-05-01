@@ -23,6 +23,7 @@ defmodule Tak.Router do
     post "/:user_id/educational_details", UserController, :create_educational_details
     get "/:user_id/educational_details", UserController, :get_educational_details
     get "/:user_id/search", UserController, :search_users
+    post "/:user_id/images/", ImageController, :upload
   end
 
   # Other scopes may use custom stacks.

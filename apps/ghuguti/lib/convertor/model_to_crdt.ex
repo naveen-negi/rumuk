@@ -3,6 +3,9 @@ defmodule Convertor.ModelToCrdt do
     alias Riak.CRDT.{Map, Register, Flag, Set, Counter}
     
     def to_crdt(model) when is_map(model) do
+      IO.puts "******** inside to_crdt map --> start *******"
+      IO.inspect model
+      IO.puts "******** inside to_crdt map *--> end ******"
         from_struct(model)
         |> Enum.reduce(Map.new, fn({k, v}, map) -> 
                 map |> Map.put(to_string(k), get_crdt_value(v))
@@ -28,6 +31,10 @@ defmodule Convertor.ModelToCrdt do
     end
 
      def get_crdt_value(value) when is_list(value) do
+      IO.puts "***** inside crdt to list start ******"
+      IO.inspect value
+      IO.puts "***** inside crdt to list end ******"
+
          value 
          |> Enum.filter(fn(x) -> x != nil end)
         |> Enum.reduce(Set.new, fn(x, acc) -> acc |> Set.put(x) end)

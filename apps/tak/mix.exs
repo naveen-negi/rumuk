@@ -44,7 +44,7 @@ defmodule Tak.Mixfile do
      {:uuid, "~> 1.1"},
      {:plug, "~> 1.3.4"},
      {:paraaz, in_umbrella: true},
-     {:ghuguti, in_umbrella: true}
+     {:ghuguti, in_umbrella: true},
     ]
   end
 end

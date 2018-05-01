@@ -63,11 +63,4 @@ defmodule UserControllerTest do
        conn = get build_conn, "api/users/#{user_id}/search?min_age=20&max_age=500&gender=#{gender}"
        assert conn.status == 200
      end
-
-     test "should be able to save image for given user" do
-       user_id = Tak.Helper.random_key
-       upload = %Plug.Upload(path: "test/fixtures/image.jpg", filename: "image.jpg")
-       conn = conn() |> post("api/users/#{user_id}/images", %{:image => upload})
-       assert conn.status == 200
-     end
 end
