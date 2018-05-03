@@ -3,7 +3,6 @@ defmodule Paraaz.NotificationService do
     alias Paraaz.Domain.User
     alias Riak.CRDT.Map
     alias Ghuguti
-    alias Paraaz.NotificationMapper
 
     def bucket_type do
       Application.get_env(:paraaz, :bucket_type)

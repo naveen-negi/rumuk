@@ -8,9 +8,6 @@ defmodule Kafal.User do
   def add_image(user, image_id) do
     images = user.images ++ [image_id]
     user = %Kafal.User{user | images: images}
-    # IO.puts "********* user **********"
-    # IO.inspect user
-    # IO.puts "********* user **********"
     user
   end
 end

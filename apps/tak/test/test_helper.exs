@@ -18,7 +18,7 @@ defmodule Tak.Case do
       IO.puts "current working dir"
       IO.inspect File.cwd!
       IO.puts "******************************"
-      File.rmdir!("./test-media_dir")
+      File.rmdir!("test-media_dir")
      end
     end
 end

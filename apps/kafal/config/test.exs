@@ -5,7 +5,7 @@ use Mix.Config
 config :kafal,
   bucket_type: "test-media",
   bucket_name: "test-media",
-  img_dir: "test-media-dir"
+  img_dir: System.tmp_dir
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
