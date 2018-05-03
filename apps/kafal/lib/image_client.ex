@@ -8,7 +8,7 @@ defmodule Kafal.ImageClient do
     user_dir = Path.join([img_dir, user_id])
     IO.inspect user_dir
     File.mkdir_p(user_dir)
-    dest_path = Path.join(user_dir, image_id <> Path.extname(image_path))
+    dest_path = Path.join(user_dir, image_id)
     File.cp!(image_path, dest_path)
     {:ok, image_id}
   end
