@@ -2,10 +2,12 @@ defmodule Rumuk.Mixfile do
   use Mix.Project
 
   def project do
-    [apps_path: "apps",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps]
+    [
+      apps_path: "apps",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps
+    ]
   end
 
   # Dependencies can be Hex packages:
@@ -23,7 +25,8 @@ defmodule Rumuk.Mixfile do
   defp deps do
     [
       {:credo, "~> 0.5", only: [:dev, :test]},
-      {:mock, "~> 0.3.0", only: :test}
+      {:mock, "~> 0.3.0", only: :test},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 end

@@ -2,16 +2,18 @@ defmodule Kafal.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :kafal,
-     version: "0.1.0",
-     build_path: "../../_build",
-     config_path: "../../config/config.exs",
-     deps_path: "../../deps",
-     lockfile: "../../mix.lock",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :kafal,
+      version: "0.1.0",
+      build_path: "../../_build",
+      config_path: "../../config/config.exs",
+      deps_path: "../../deps",
+      lockfile: "../../mix.lock",
+      # elixir: "~> 1.4",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
@@ -36,10 +38,11 @@ defmodule Kafal.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:credo, "~> 0.5", only: [:dev, :test]},
+    [
+      {:credo, "~> 0.5", only: [:dev, :test]},
+      {:uuid, "~> 1.1"},
       {:riak, "~> 1.0"},
-     {:briefly, "~> 0.3", only: [:test]}
-]
+      {:briefly, "~> 0.3", only: [:test]}
+    ]
   end
-
 end

@@ -9,8 +9,8 @@ use Mix.Config
 # back to each application for organization purposes.
 import_config "../apps/*/config/config.exs"
 
-config :pooler, pools:
-  [
+config :pooler,
+  pools: [
     [
       name: :riaklocal1,
       group: :riak,
