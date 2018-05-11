@@ -18,3 +18,5 @@ erl_crash.dump
 *.beam
 .*
 !/.gitignore
+cover/
+.DS_Store/

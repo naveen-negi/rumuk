@@ -40,7 +40,15 @@ defmodule Kafal.RiakRepo do
     riak_user
     |> Ghuguti.update_crdt([:images, user.images])
     |> Riak.update(bucket_type, bucket_name, user_id)
-
     {:ok, user}
+  end
+
+  def get(user_id) do
+   riak_user = Riak.find(bucket_type, bucket_name, user_id)
+   user =
+     riak_user
+     |> Map.value()
+     |> Ghuguti.to_model(User)
+   {:ok, user}
   end
 end
