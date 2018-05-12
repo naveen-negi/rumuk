@@ -3,6 +3,7 @@ defmodule Tak.ImageService do
   alias Kafal.Image
 
   def save(user_id, image_id, image_path) do
+    IO.puts "inside image service ... save ****************"
     ContentHandler.save(user_id, image_id, image_path)
     :ok
     end

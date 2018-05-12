@@ -28,7 +28,7 @@ defmodule Rumuk.Mixfile do
 
   defp deps do
     [
-      {:credo, "~> 0.5", only: [:dev, :test]},
+      {:credo, "~> 0.9.2", only: [:dev, :test]},
       {:mock, "~> 0.3.0", only: :test},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:coverex, "~> 1.4.10", only: :test}

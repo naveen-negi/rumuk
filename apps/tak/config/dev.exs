@@ -16,8 +16,8 @@ config :tak, Tak.Endpoint,
 
 config :tak,
   bucket_type: "maps",
-  bucket_name: "users"
-
+  bucket_name: "users",
+  img_dir: "~/images"
 # Watch static and templates for browser reloading.
 config :tak, Tak.Endpoint,
   live_reload: [

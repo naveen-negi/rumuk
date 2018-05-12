@@ -12,6 +12,8 @@ defmodule Kafal.RiakRepo do
 
   def save(user_id, image_id) do
     user = Riak.find(bucket_type, bucket_name, user_id)
+    IO.puts "inside riak repo"
+    IO.inspect user
     save(user, user_id, image_id)
   end
 

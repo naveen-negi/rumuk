@@ -46,9 +46,9 @@ $bin/riak-admin bucket-type activate notification-users
 $bin/riak-admin bucket-type create notifications '{"props":{"datatype":"map", "search_index":"notifications"}}'
 $bin/riak-admin bucket-type activate notifications
 
-#no need for search on media
-# $bin/riak-admin bucket-type create media '{"props":{"datatype":"map", "search_index":"media"}}'
-# $bin/riak-admin bucket-type activate media
+# no need for search on media
+$bin/riak-admin bucket-type create media '{"props":{"datatype":"map"}}'
+$bin/riak-admin bucket-type activate media
 
 #create test buckets types.
 $bin/riak-admin bucket-type create test-users '{"props":{"datatype":"map","search_index":"test-users"}}'
