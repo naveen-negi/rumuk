@@ -26,6 +26,7 @@ defmodule Tak.Router do
     post "/:user_id/images/", ImageController, :upload
     get "/:user_id/images", ImageController, :get_all
     get "/:user_id/images/:image_id", ImageController, :get
+    delete "/:user_id/images/:image_id", ImageController, :delete
   end
 
   # Other scopes may use custom stacks.

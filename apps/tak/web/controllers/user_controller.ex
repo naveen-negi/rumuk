@@ -5,66 +5,66 @@ defmodule Tak.UserController do
   import Map
 
   def create_basic_info(conn, params) do
-    user_id = conn.params["user_id"]
-    changeset = BasicInfo.changeset(%BasicInfo{}, params)
+    # user_id = conn.params["user_id"]
+    # changeset = %BasicInfo{}, params
+    # basic_info = 
 
-    case changeset.valid? do
-      true ->
-        user_id
-        |> User.new
-        |> User.update(struct(BasicInfo, changeset.changes))
-        |> Tak.UserServer.save(:basic_info)
+    # case changeset.valid? do
+    #   true ->
+    #     user_id
+    #     |> User.new
+    #     |> User.update(struct(BasicInfo, changeset.changes))
+    #     |> Tak.UserServer.save(:basic_info)
 
-        send_resp(conn, 204,"")
+    #     send_resp(conn, 204,"")
 
-      false ->  errors = Tak.ChangesetView.render("error.json", %{changeset: changeset})
-      conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(400, Poison.encode!(errors))
-    end
+    #   false ->  errors = Tak.ChangesetView.render("error.json", %{changeset: changeset})
+    #   conn
+    #   |> put_resp_content_type("application/json")
+    #   |> send_resp(400, Poison.encode!(errors))
+    # end
   end
 
   def get_basic_info(conn, params) do
-    user_id = conn.params["user_id"]
-    user = Tak.UserServer.lookup(user_id) 
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(user.basic_info))
+    # user_id = conn.params["user_id"]
+    # user = Tak.UserServer.lookup(user_id) 
+    # conn
+    # |> put_resp_content_type("application/json")
+    # |> send_resp(200, Poison.encode!(user.basic_info))
   end
 
   def get_educational_details(conn, params) do
-    user_id = conn.params["user_id"]
-    user = Tak.UserServer.lookup(user_id)
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(user.educational_details))
+    # user_id = conn.params["user_id"]
+    # user = Tak.UserServer.lookup(user_id)
+    # conn
+    # |> put_resp_content_type("application/json")
+    # |> send_resp(200, Poison.encode!(user.educational_details))
   end
 
   def create_educational_details(conn, params) do
-    user_id = conn.params["user_id"]
-    changeset = EducationalDetails.changeset(%EducationalDetails{}, params)
-    case changeset.valid? do
-      true -> User.new(user_id) 
-      |> User.update(struct(EducationalDetails, changeset.changes))
-      |> Tak.UserServer.save(:educational_details)
-        send_resp(conn, 204,"")
+    # user_id = conn.params["user_id"]
+    # changeset = EducationalDetails.changeset(%EducationalDetails{}, params)
+    # case changeset.valid? do
+    #   true -> User.new(user_id) 
+    #   |> User.update(struct(EducationalDetails, changeset.changes))
+    #   |> Tak.UserServer.save(:educational_details)
+    #     send_resp(conn, 204,"")
 
-      false ->  errors = Tak.ChangesetView.render("error.json", %{changeset: changeset})
-        conn
-        |> put_resp_content_type("application/json")
-        |> send_resp(400, Poison.encode!(errors))
-    end
+    #   false ->  errors = Tak.ChangesetView.render("error.json", %{changeset: changeset})
+    #     conn
+    #     |> put_resp_content_type("application/json")
+    #     |> send_resp(400, Poison.encode!(errors))
+    # end
   end
 
   def search_users(conn, params) do
-    gender = params["gender"]
-    min_age = params["min_age"]
-    max_age = params["max_age"]
+    # gender = params["gender"]
+    # min_age = params["min_age"]
+    # max_age = params["max_age"]
 
-    results = Tak.UserServer.search(%{gender: gender, min_age: min_age, max_age: max_age})
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(results))
-  end
-
+    # results = Tak.UserServer.search(%{gender: gender, min_age: min_age, max_age: max_age})
+    # conn
+    # |> put_resp_content_type("application/json")
+    # |> send_resp(200, Poison.encode!(results))
+  end 
 end

@@ -38,7 +38,14 @@ defmodule Tak.ImageControllerTest do
         conn = get build_conn, "api/users/#{user_id}/images/image_id"
         assert conn.status == 200 
       end
-
     end
 
+    test "should be able to delete image for given id" do
+      user_id = Tak.Helper.random_key
+      image_id = "image.jpg"
+      with_mock ImageService, [delete: fn(user_id, image_id) -> :ok end] do
+        conn = delete build_conn, "api/users/#{user_id}/images/#{image_id}"
+        assert conn.status == 200 
+      end
+    end
 end

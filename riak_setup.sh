@@ -60,7 +60,7 @@ $bin/riak-admin bucket-type activate test-notification-users
 $bin/riak-admin bucket-type create test-notifications '{"props":{"datatype":"map","search_index":"test-notifications"}}'
 $bin/riak-admin bucket-type activate test-notifications
 
-$bin/riak-admin bucket-type create test-media
+$bin/riak-admin bucket-type create test-media '{"props":{"datatype":"map"}}'
 $bin/riak-admin bucket-type activate test-media
 
 $bin/riak-admin bucket-type create maps '{"props":{"datatype":"map"}}'

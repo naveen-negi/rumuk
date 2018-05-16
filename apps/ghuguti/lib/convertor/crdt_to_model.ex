@@ -41,5 +41,4 @@ alias Riak.CRDT.Map, as: M
        end 
     end
 
-  
 end

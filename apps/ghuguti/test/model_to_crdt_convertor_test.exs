@@ -206,6 +206,24 @@ test "should update crdt with Set" do
     assert "watching anime" in set
  end
 
+test "should update crdt  Set when entry is removed" do
+     key = Ghuguti.Helper.random_key
+     model = BasicMapWithSet.new
+
+     ModelToCrdt.to_crdt(model)
+     |> Riak.update("maps", "bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key)
+    ModelToCrdt.delete_field(map, [:interests, "shopping"]) |> Riak.update("maps", "bucketmap", key)
+
+    map = Riak.find("maps", "bucketmap", key) |> Map.value
+    map_keys = :orddict.fetch_keys(map)
+
+    set = :orddict.fetch({"interests", :set}, map)
+    IO.inspect set
+    refute "shopping" in set
+    assert "watching movies" in set
+ end
 
 defp given_that_user_already_exists(user_id) do
       BasicMap.new(user_id)
@@ -232,6 +250,10 @@ defmodule BasicMapWithSet do
 
   def new do
     %BasicMapWithSet{} 
+  end
+
+  def update_interests(set, values) do
+    %BasicMapWithSet{set | interests: values}
   end
 end
 

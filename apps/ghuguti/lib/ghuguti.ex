@@ -12,4 +12,8 @@ end
 def update_crdt(crdt, params) do
      ModelToCrdt.update_crdt(crdt, params)
 end
+
+def delete_field(crdt, [key, value] = params) do
+  ModelToCrdt.delete_field(crdt, params)
+end
 end

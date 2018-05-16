@@ -39,8 +39,6 @@ defmodule Tak.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     # {:poison, "~> 3.0"},
-     {:phoenix_ecto, "~> 3.0"},
      {:uuid, "~> 1.1"},
      {:plug, "~> 1.3.4"},
      {:paraaz, in_umbrella: true},
