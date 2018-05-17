@@ -30,10 +30,8 @@ defmodule Kafal.ImageClient do
     user_dir = Path.join([img_dir, user_id])
     dest_path = Path.join(user_dir, image_id)
     case File.exists?(dest_path) do
-      true -> IO.puts "*** file found deleting it *****"
-        File.rm(dest_path)
-        IO.puts "******* file deleted ******"
-      false -> {:ok, "already deleted"}
+      true -> File.rm(dest_path)
+      false -> :ok
     end
   end
 

@@ -42,7 +42,7 @@ defmodule Tak.ImageController do
     user_id = params["user_id"]
     image_id = params["image_id"]
     case ImageService.delete(user_id, image_id) do
-      {:ok, user} -> conn
+      :ok -> conn
       |> send_resp(200, "sucessfully deleted image")
     end
   end

@@ -2,6 +2,7 @@ defmodule Kafal.ContentHandler do
   alias Kafal.ImageClient
   alias Kafal.User
   alias Kafal.RiakRepo
+
 def save(user_id, image_id, image_path) do
     unique_image_id = UUID.uuid1() <> Path.extname(image_id)
     {:ok, image} = ImageClient.save(user_id, unique_image_id, image_path)
@@ -39,16 +40,8 @@ def save(user_id, image_id, image_path) do
   def delete(user_id, image_id) do
     case RiakRepo.get(user_id) do
       {:ok, user} ->
-                images =
-                  user.images
-                  |> Enum.filter(fn image -> image != image_id end)
-
-                ImageClient.delete(user_id, image_id)
-
-                user = User.new(user_id, images)
-                result = RiakRepo.update(user)
-                IO.puts "***** image deleted  *******"
-                result
+        RiakRepo.delete(user_id, image_id)
+        ImageClient.delete(user_id, image_id)
     end
   end
 

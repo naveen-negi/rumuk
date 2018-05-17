@@ -43,4 +43,20 @@ defmodule Kafal.ContentHandlerTest do
     end
   end
 
+  test "should be able to delete a image for user" do
+    user_id = "rin"
+    image_id = "image_1.jpg"
+    user = User.new(user_id)
+    with_mock RiakRepo,
+      get: fn user_id -> {:ok, user} end,
+      delete: fn (user_id, image_id) -> :ok  end
+        do
+        with_mock ImageClient,
+          delete: fn (_user, _image) -> :ok end do
+        response = ContentHandler.delete(user_id, image_id)
+        assert :ok == response
+    end
+    end
+  end
+
 end
