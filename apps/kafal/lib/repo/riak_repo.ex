@@ -59,5 +59,4 @@ defmodule Kafal.RiakRepo do
      |> Ghuguti.delete_field([:images, image_id])
      |> Riak.update(bucket_type, bucket_name, user_id)
   end
-
 end

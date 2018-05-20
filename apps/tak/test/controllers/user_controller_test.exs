@@ -5,6 +5,7 @@ defmodule UserControllerTest do
      alias Tak.User.{BasicInfo, EducationalDetails}
     @moduletag :user
 
+    @tag :basic_info
       test "should be able to create user with basic info" do
         key = Tak.Helper.random_key
         conn = post build_conn, "api/users/rin/basic_info", %{name: "erin", age: 33, isMale: false}

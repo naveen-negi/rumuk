@@ -4,26 +4,17 @@ defmodule Tak.UserController do
   alias Tak.User.{BasicInfo, EducationalDetails}
   import Map
 
-  def create_basic_info(conn, params) do
-    # user_id = conn.params["user_id"]
-    # changeset = %BasicInfo{}, params
-    # basic_info = 
+  def create_basic_info(conn, %{"age" =>  age, "isMale" =>  is_male, "name" =>  name, "user_id" => user_id} = params) do
+    basic_info = %{age: age, name: name, gender: to_gender(is_male)}
 
-    # case changeset.valid? do
-    #   true ->
-    #     user_id
-    #     |> User.new
-    #     |> User.update(struct(BasicInfo, changeset.changes))
-    #     |> Tak.UserServer.save(:basic_info)
+    user_id
+     |> User.new
+     |> User.update(BasicInfo.new(basic_info))
+     |> Tak.UserServer.save(:basic_info)
 
-    #     send_resp(conn, 204,"")
-
-    #   false ->  errors = Tak.ChangesetView.render("error.json", %{changeset: changeset})
-    #   conn
-    #   |> put_resp_content_type("application/json")
-    #   |> send_resp(400, Poison.encode!(errors))
-    # end
+     send_resp(conn, 204,"")
   end
+
 
   def get_basic_info(conn, params) do
     # user_id = conn.params["user_id"]
@@ -67,4 +58,12 @@ defmodule Tak.UserController do
     # |> put_resp_content_type("application/json")
     # |> send_resp(200, Poison.encode!(results))
   end 
+  
+  defp to_gender(is_male) do
+    case is_male do
+      true -> "male"
+      false -> "female"
+    end
+  end
+
 end

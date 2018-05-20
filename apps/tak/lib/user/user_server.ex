@@ -10,6 +10,7 @@ defmodule Tak.UserServer do
   end
 
   def save( %Tak.User{} = user, :basic_info) do
+    IO.puts "inside user gen server ..."
     basic_info = struct(Bhaduli.User.BasicInfo, from_ecto(user.basic_info))
     UserService.create(user.id)
     |> UserService.update(basic_info)
