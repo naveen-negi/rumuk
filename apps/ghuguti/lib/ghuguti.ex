@@ -1,19 +1,19 @@
 defmodule Ghuguti do
-alias Convertor.{ModelToCrdt, CrdtToModel}
+  alias Convertor.{ModelToCrdt, CrdtToModel}
 
-def to_model(crdt, kind) do
+  def to_model(crdt, kind) do
     CrdtToModel.to_model(crdt, kind)
-end
+  end
 
-def to_crdt(model) do
+  def to_crdt(model) do
     ModelToCrdt.to_crdt(model)
-end
+  end
 
-def update_crdt(crdt, params) do
-     ModelToCrdt.update_crdt(crdt, params)
-end
+  def update_crdt(crdt, params) do
+    ModelToCrdt.update_crdt(crdt, params)
+  end
 
-def delete_field(crdt, [key, value] = params) do
-  ModelToCrdt.delete_field(crdt, params)
-end
+  def delete_field(crdt, [key, value] = params) do
+    ModelToCrdt.delete_field(crdt, params)
+  end
 end

@@ -2,16 +2,18 @@ defmodule Ghuguti.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :ghuguti,
-     version: "0.1.0",
-     build_path: "../../_build",
-     config_path: "../../config/config.exs",
-     deps_path: "../../deps",
-     lockfile: "../../mix.lock",
-     # elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps]
+    [
+      app: :ghuguti,
+      version: "0.1.0",
+      build_path: "../../_build",
+      config_path: "../../config/config.exs",
+      deps_path: "../../deps",
+      lockfile: "../../mix.lock",
+      # elixir: "~> 1.4",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps
+    ]
   end
 
   # Configuration for the OTP application
@@ -37,8 +39,8 @@ defmodule Ghuguti.Mixfile do
   defp deps do
     [
       {:riak, "~> 1.0"},
-        { :uuid, "~> 1.1" },
-         {:credo, "~> 0.5", only: [:dev, :test]}
+      {:uuid, "~> 1.1"},
+      {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end
