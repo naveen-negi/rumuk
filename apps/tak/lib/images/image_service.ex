@@ -5,7 +5,7 @@ defmodule Tak.ImageService do
   def save(user_id, image_id, image_path) do
     ContentHandler.save(user_id, image_id, image_path)
     :ok
-    end
+  end
 
   def get(user_id, image_id) do
     ContentHandler.get(user_id, image_id)
@@ -15,9 +15,7 @@ defmodule Tak.ImageService do
     ContentHandler.get(user_id)
   end
 
-
   def delete(user_id, image_id) do
     ContentHandler.delete(user_id, image_id)
   end
-
 end

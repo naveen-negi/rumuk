@@ -15,5 +15,5 @@
 #     changeset = BasicInfo.changeset(%BasicInfo{}, @invalid_attrs)
 #     assert changeset.valid? == false
 #   end
-  
+
 # end

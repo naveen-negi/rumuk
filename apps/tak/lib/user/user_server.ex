@@ -9,38 +9,49 @@ defmodule Tak.UserServer do
     GenServer.start_link(__MODULE__, :ok, name: name)
   end
 
-  def save( %Tak.User{} = user, :basic_info) do
-    IO.puts "inside user gen server ..."
+  def save(%Tak.User{} = user, :basic_info) do
+    IO.puts("inside user gen server ...")
     basic_info = struct(Bhaduli.User.BasicInfo, from_ecto(user.basic_info))
+
     UserService.create(user.id)
     |> UserService.update(basic_info)
-    |> UserService.save
+    |> UserService.save()
   end
 
   def save(%Tak.User{} = user, :educational_details) do
-    educational_details = struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
+    educational_details =
+      struct(Bhaduli.User.EducationalDetails, from_ecto(user.educational_details))
+
     UserService.create(user.id)
     |> UserService.update(educational_details)
-    |> UserService.save
+    |> UserService.save()
   end
-
 
   def lookup(user_id) do
     case Bhaduli.UserService.get(user_id) do
-      {:ok, user} ->  basic_info = struct(Tak.User.BasicInfo, from_struct(user.basic_info))
-                      educational_details = struct(Tak.User.EducationalDetails, from_struct(user.educational_details))
-      user_dto = Tak.User.new(user.user_id)
-      |> Tak.User.update(basic_info)
-      |> Tak.User.update(educational_details)
-      user_dto
-    {:error, reasons} -> {:error, reasons}
+      {:ok, user} ->
+        basic_info = struct(Tak.User.BasicInfo, from_struct(user.basic_info))
+
+        educational_details =
+          struct(Tak.User.EducationalDetails, from_struct(user.educational_details))
+
+        user_dto =
+          Tak.User.new(user.user_id)
+          |> Tak.User.update(basic_info)
+          |> Tak.User.update(educational_details)
+
+        user_dto
+
+      {:error, reasons} ->
+        {:error, reasons}
     end
   end
 
   def search(query) do
     {:ok, count, results} = Bhaduli.UserService.search(query)
-    IO.puts "fetched search results ......."
-    IO.inspect results
+    IO.puts("fetched search results .......")
+    IO.inspect(results)
+
     if count == 0 do
       []
     else
@@ -50,8 +61,11 @@ defmodule Tak.UserServer do
 
   defp to_domain(%Bhaduli.User{} = user) do
     basic_info = struct(Tak.User.BasicInfo, from_struct(user.basic_info))
-    educational_details = struct(Tak.User.EducationalDetails, from_struct(user.educational_details))
-     Tak.User.new(user.user_id)
+
+    educational_details =
+      struct(Tak.User.EducationalDetails, from_struct(user.educational_details))
+
+    Tak.User.new(user.user_id)
     |> Tak.User.update(basic_info)
     |> Tak.User.update(educational_details)
   end
