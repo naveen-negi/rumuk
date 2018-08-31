@@ -16,10 +16,11 @@ defmodule Kafal.ImageClientTest do use ExUnit.Case
 
   test "should retrieve saved image for user" do
     upload = get_image()
-    user_id = "rin_1";
+    user_id = "rin_1"
     expected_image_path = Path.join([ImageClient.img_dir(), user_id, upload.filename])
 
-    {:ok, image} = ImageClient.get(user_id, upload.filename) 
+    result = ImageClient.save(user_id, upload.filename, upload.path)
+    {:ok, image} = ImageClient.get(user_id, upload.filename)
     assert image.path == expected_image_path
   end
 
