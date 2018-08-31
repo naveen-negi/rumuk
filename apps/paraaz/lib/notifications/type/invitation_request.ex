@@ -1,7 +1,7 @@
 defmodule Paraaz.CategoryType.InvitationRequest do
-    @behaviour Paraaz.CategoryType
+  @behaviour Paraaz.CategoryType
 
-    def type do
-        %Paraaz.CategoryType{value: "invitation_request"}
-    end
+  def type do
+    %Paraaz.CategoryType{value: "invitation_request"}
+  end
 end
