@@ -10,8 +10,7 @@ config :tak, Tak.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "UDl4Zut6sz3mlNke/cePbwU4MFPXYH+ahcfAQ5+QgCzPbPRsUacs8UogBIB+Ya2W",
   render_errors: [view: Tak.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Tak.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Tak.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -20,4 +19,4 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

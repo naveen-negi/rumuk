@@ -10,7 +10,7 @@ defmodule Tak do
     children = [
       # Start the endpoint when the application starts
       supervisor(Tak.Endpoint, []),
-      worker(Tak.NotificationServer, [Tak.NotificationServer]),
+      worker(Tak.NotificationServer, [Tak.NotificationServer])
       # worker(Tak.UserServer, [Tak.UserServer])
     ]
 

@@ -18,7 +18,7 @@ defmodule Kafal.RiakRepo do
   def save(user, user_id, image_id) when is_nil(user) do
     user =
       user_id
-      |> User.new
+      |> User.new()
       |> User.add_image(image_id)
 
     user
@@ -40,23 +40,26 @@ defmodule Kafal.RiakRepo do
     riak_user
     |> Ghuguti.update_crdt([:images, user.images])
     |> Riak.update(bucket_type, bucket_name, user_id)
+
     {:ok, user}
   end
 
   def get(user_id) do
-   riak_user = Riak.find(bucket_type, bucket_name, user_id)
-   user =
-     riak_user
-     |> Map.value()
-     |> Ghuguti.to_model(User)
-   {:ok, user}
+    riak_user = Riak.find(bucket_type, bucket_name, user_id)
+
+    user =
+      riak_user
+      |> Map.value()
+      |> Ghuguti.to_model(User)
+
+    {:ok, user}
   end
 
   def delete(user_id, image_id) do
-     riak_user = Riak.find(bucket_type, bucket_name, user_id)
+    riak_user = Riak.find(bucket_type, bucket_name, user_id)
 
-     riak_user
-     |> Ghuguti.delete_field([:images, image_id])
-     |> Riak.update(bucket_type, bucket_name, user_id)
+    riak_user
+    |> Ghuguti.delete_field([:images, image_id])
+    |> Riak.update(bucket_type, bucket_name, user_id)
   end
 end

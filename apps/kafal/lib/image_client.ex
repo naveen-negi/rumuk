@@ -17,10 +17,12 @@ defmodule Kafal.ImageClient do
   def get(user_id, image_id) do
     user_dir = Path.join([img_dir, user_id])
     dest_path = Path.join(user_dir, image_id)
+
     case File.exists?(dest_path) do
       true ->
         image = Kafal.Image.new(image_id, dest_path)
         {:ok, image}
+
       false ->
         {:not_found, "not found"}
     end
@@ -29,10 +31,10 @@ defmodule Kafal.ImageClient do
   def delete(user_id, image_id) do
     user_dir = Path.join([img_dir, user_id])
     dest_path = Path.join(user_dir, image_id)
+
     case File.exists?(dest_path) do
       true -> File.rm(dest_path)
       false -> :ok
     end
   end
-
 end

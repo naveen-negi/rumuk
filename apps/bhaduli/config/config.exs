@@ -29,15 +29,15 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-config :pooler, pools:
-[
-  [
-    name: :riaklocal1,
-    group: :riak,
-    max_count: 20,
-    init_count: 10,
-    start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 8087]}
+config :pooler,
+  pools: [
+    [
+      name: :riaklocal1,
+      group: :riak,
+      max_count: 20,
+      init_count: 10,
+      start_mfa: {Riak.Connection, :start_link, ['127.0.0.1', 8087]}
+    ]
   ]
-]
 
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

@@ -7,7 +7,8 @@ defmodule Tak.ImageServiceTest do
     user_id = "rin_1"
     image_id = "rin_1.jpg"
     image_path = "path/to/image"
-    with_mock Kafal.ContentHandler, [save: fn(_user, _id, _path) -> {:ok, "somefileName"} end] do
+
+    with_mock Kafal.ContentHandler, save: fn _user, _id, _path -> {:ok, "somefileName"} end do
       result = ImageService.save(user_id, image_id, image_path)
       assert result == :ok
     end
