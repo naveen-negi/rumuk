@@ -5,7 +5,7 @@ defmodule Kafal.RiakRepoTest do
 
   test "should add image id to a newly created user" do
     image_id = Tak.Helper.random_key()
-    user_id = Tak.Helper.random_key
+    user_id = Tak.Helper.random_key()
     {:ok, user} = RiakRepo.save(user_id, image_id)
     assert Enum.member?(user.images, image_id)
   end
@@ -27,15 +27,14 @@ defmodule Kafal.RiakRepoTest do
     {:ok, user} = RiakRepo.save(user_id, image_id)
     {:ok, user} = RiakRepo.get(user_id)
     assert Enum.member?(user.images, image_id) == true
-end
+  end
 
- test "should delete given image for user" do
-  image_id = Tak.Helper.random_key()
-  user_id = Tak.Helper.random_key()
-  {:ok, user} = RiakRepo.save(user_id, image_id)
-  RiakRepo.delete(user_id, image_id)
-  {:ok, user} = RiakRepo.get(user_id)
-  assert Enum.member?(user.images, image_id) == false
-end
-
+  test "should delete given image for user" do
+    image_id = Tak.Helper.random_key()
+    user_id = Tak.Helper.random_key()
+    {:ok, user} = RiakRepo.save(user_id, image_id)
+    RiakRepo.delete(user_id, image_id)
+    {:ok, user} = RiakRepo.get(user_id)
+    assert Enum.member?(user.images, image_id) == false
+  end
 end

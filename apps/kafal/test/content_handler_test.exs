@@ -31,14 +31,15 @@ defmodule Kafal.ContentHandlerTest do
     image_path = "path/to/image"
     image = Kafal.Image.new(image_id, image_path)
 
-    user = User.new(user_id)
-    |> User.add_image(image_id)
+    user =
+      User.new(user_id)
+      |> User.add_image(image_id)
 
     with_mock RiakRepo, get: fn user_id -> {:ok, user} end do
-    with_mock ImageClient, get: fn (_user, _image) -> {:ok, image} end do
-      response = ContentHandler.get(user_id)
-      {:ok, images} = response
-        assert images != nil 
+      with_mock ImageClient, get: fn _user, _image -> {:ok, image} end do
+        response = ContentHandler.get(user_id)
+        {:ok, images} = response
+        assert images != nil
       end
     end
   end
@@ -47,16 +48,15 @@ defmodule Kafal.ContentHandlerTest do
     user_id = "rin"
     image_id = "image_1.jpg"
     user = User.new(user_id)
+
     with_mock RiakRepo,
       get: fn user_id -> {:ok, user} end,
-      delete: fn (user_id, image_id) -> :ok  end
-        do
-        with_mock ImageClient,
-          delete: fn (_user, _image) -> :ok end do
+      delete: fn user_id, image_id -> :ok end do
+      with_mock ImageClient,
+        delete: fn _user, _image -> :ok end do
         response = ContentHandler.delete(user_id, image_id)
         assert :ok == response
-    end
+      end
     end
   end
-
 end
